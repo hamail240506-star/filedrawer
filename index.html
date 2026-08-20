@@ -3,16 +3,13 @@
 <head>
 <meta charset="UTF-8">
 
-<meta name="google-site-verification" content="wIoCeZuv8Eimh1UydE6gA4w41brwaEACFDGnwIUyQKw" />
+<meta name="google-site-verification" content="wIoCeZuv8Eimh1UydE6gA4w41brwaEACFDGnwIUyQKw">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Free PDF Tools Online — Merge, Split, Convert & Watermark | FileDrawer</title>
 
 <meta name="description" content="Free PDF tools online. Merge PDFs, split PDF pages, convert JPG and PNG images to PDF, and add PDF watermarks. No signup and no uploads — everything works in your browser.">
-  <meta name="keywords" content="PDF tools, merge PDF, split PDF, PDF converter, image to PDF, JPG to PDF, PNG to PDF, PDF watermark, free PDF tools">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="PDF tools, merge PDF, split PDF, JPG to PDF, PNG to PDF, PDF watermark, free PDF tools">
 
 <meta name="robots" content="index, follow">
 <meta name="author" content="FileDrawer">
@@ -30,6 +27,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <style>
+
 :root{
   --ink:#152524;
   --ink-2:#1f3634;
@@ -165,6 +163,7 @@ main{
   flex-direction:column;
   gap:6px;
   color:var(--paper);
+  width:100%;
 }
 
 .drawer:hover,
@@ -242,6 +241,7 @@ main{
   padding:34px 18px;
   text-align:center;
   cursor:pointer;
+  user-select:none;
 }
 
 .dropzone.drag{
@@ -464,28 +464,38 @@ footer{
   font-family:inherit;
   font-size:12px;
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="eyebrow">Your files stay on your device</div>
 
-  <h1>Four tools.<br>Zero <em>uploads.</em></h1>
+  <div class="eyebrow">
+    Your files stay on your device
+  </div>
+
+  <h1>
+    Four tools.<br>
+    Zero <em>uploads.</em>
+  </h1>
 
   <p class="sub">
     Free PDF and image tools that work directly in your browser.
     Merge, split, convert and watermark your files without creating an account.
   </p>
+
 </header>
 
 <nav>
-  <button onclick="showHome()">Home</button>
-  <button onclick="showPage('about')">About</button>
-  <button onclick="showPage('privacy')">Privacy</button>
-  <button onclick="showPage('terms')">Terms</button>
-  <button onclick="showPage('contact')">Contact</button>
+
+  <button type="button" onclick="showHome()">Home</button>
+  <button type="button" onclick="showPage('about')">About</button>
+  <button type="button" onclick="showPage('privacy')">Privacy</button>
+  <button type="button" onclick="showPage('terms')">Terms</button>
+  <button type="button" onclick="showPage('contact')">Contact</button>
+
 </nav>
 
 <main>
@@ -494,25 +504,25 @@ footer{
 
   <div class="drawers">
 
-    <button class="drawer" data-tool="merge">
+    <button type="button" class="drawer" data-tool="merge">
       <span class="tag">01 · COMBINE</span>
       <h3>Merge PDFs</h3>
       <p>Combine multiple PDF files into one document.</p>
     </button>
 
-    <button class="drawer" data-tool="split">
+    <button type="button" class="drawer" data-tool="split">
       <span class="tag">02 · SEPARATE</span>
       <h3>Split PDF</h3>
       <p>Extract a selected page range from a PDF.</p>
     </button>
 
-    <button class="drawer" data-tool="img2pdf">
+    <button type="button" class="drawer" data-tool="img2pdf">
       <span class="tag">03 · CONVERT</span>
       <h3>Images → PDF</h3>
       <p>Convert JPG and PNG images into a PDF document.</p>
     </button>
 
-    <button class="drawer" data-tool="watermark">
+    <button type="button" class="drawer" data-tool="watermark">
       <span class="tag">04 · STAMP</span>
       <h3>Add Watermark</h3>
       <p>Add text across every page of your PDF.</p>
@@ -520,33 +530,49 @@ footer{
 
   </div>
 
-
   <section class="workspace" id="ws-merge">
 
     <div class="ws-head">
+
       <div>
         <h2>Merge PDFs</h2>
         <p>Drop two or more PDFs and combine them in the listed order.</p>
       </div>
 
-      <button class="close-btn" data-close>&times;</button>
+      <button type="button" class="close-btn" data-close>&times;</button>
+
     </div>
 
     <div class="dropzone" id="dz-merge">
-      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+
+      <div class="dz-icon">
+        DRAG · DROP · OR TAP
+      </div>
+
       <strong>Add PDF files</strong>
-      <span class="hint">You can add multiple files</span>
+
+      <span class="hint">
+        You can add multiple files
+      </span>
+
     </div>
 
-    <input type="file"
-           id="file-merge"
-           accept="application/pdf"
-           multiple
-           hidden>
+    <input
+      type="file"
+      id="file-merge"
+      accept="application/pdf"
+      multiple
+      hidden
+    >
 
     <div class="filelist" id="list-merge"></div>
 
-    <button class="run-btn" id="run-merge" disabled>
+    <button
+      type="button"
+      class="run-btn"
+      id="run-merge"
+      disabled
+    >
       Merge & download
     </button>
 
@@ -558,24 +584,38 @@ footer{
   <section class="workspace" id="ws-split">
 
     <div class="ws-head">
+
       <div>
         <h2>Split PDF</h2>
         <p>Choose a PDF and extract the page range you need.</p>
       </div>
 
-      <button class="close-btn" data-close>&times;</button>
+      <button type="button" class="close-btn" data-close>
+        &times;
+      </button>
+
     </div>
 
     <div class="dropzone" id="dz-split">
-      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+
+      <div class="dz-icon">
+        DRAG · DROP · OR TAP
+      </div>
+
       <strong>Add one PDF file</strong>
-      <span class="hint">We'll detect the number of pages</span>
+
+      <span class="hint">
+        We'll detect the number of pages
+      </span>
+
     </div>
 
-    <input type="file"
-           id="file-split"
-           accept="application/pdf"
-           hidden>
+    <input
+      type="file"
+      id="file-split"
+      accept="application/pdf"
+      hidden
+    >
 
     <div class="filelist" id="list-split"></div>
 
@@ -583,23 +623,36 @@ footer{
 
       <label>
         From page
-        <input type="number"
-               id="split-from"
-               min="1"
-               value="1">
+
+        <input
+          type="number"
+          id="split-from"
+          min="1"
+          value="1"
+        >
+
       </label>
 
       <label>
         To page
-        <input type="number"
-               id="split-to"
-               min="1"
-               value="1">
+
+        <input
+          type="number"
+          id="split-to"
+          min="1"
+          value="1"
+        >
+
       </label>
 
     </div>
 
-    <button class="run-btn" id="run-split" disabled>
+    <button
+      type="button"
+      class="run-btn"
+      id="run-split"
+      disabled
+    >
       Extract & download
     </button>
 
@@ -611,29 +664,48 @@ footer{
   <section class="workspace" id="ws-img2pdf">
 
     <div class="ws-head">
+
       <div>
         <h2>Images → PDF</h2>
         <p>Convert JPG and PNG images into a single PDF.</p>
       </div>
 
-      <button class="close-btn" data-close>&times;</button>
+      <button type="button" class="close-btn" data-close>
+        &times;
+      </button>
+
     </div>
 
     <div class="dropzone" id="dz-img2pdf">
-      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+
+      <div class="dz-icon">
+        DRAG · DROP · OR TAP
+      </div>
+
       <strong>Add image files</strong>
-      <span class="hint">JPG and PNG supported</span>
+
+      <span class="hint">
+        JPG and PNG supported
+      </span>
+
     </div>
 
-    <input type="file"
-           id="file-img2pdf"
-           accept="image/jpeg,image/png"
-           multiple
-           hidden>
+    <input
+      type="file"
+      id="file-img2pdf"
+      accept="image/jpeg,image/png"
+      multiple
+      hidden
+    >
 
     <div class="filelist" id="list-img2pdf"></div>
 
-    <button class="run-btn" id="run-img2pdf" disabled>
+    <button
+      type="button"
+      class="run-btn"
+      id="run-img2pdf"
+      disabled
+    >
       Convert & download
     </button>
 
@@ -645,24 +717,38 @@ footer{
   <section class="workspace" id="ws-watermark">
 
     <div class="ws-head">
+
       <div>
         <h2>Add Watermark</h2>
         <p>Add text diagonally across every page of your PDF.</p>
       </div>
 
-      <button class="close-btn" data-close>&times;</button>
+      <button type="button" class="close-btn" data-close>
+        &times;
+      </button>
+
     </div>
 
     <div class="dropzone" id="dz-watermark">
-      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+
+      <div class="dz-icon">
+        DRAG · DROP · OR TAP
+      </div>
+
       <strong>Add one PDF file</strong>
-      <span class="hint">Your text will be applied to every page</span>
+
+      <span class="hint">
+        Your text will be applied to every page
+      </span>
+
     </div>
 
-    <input type="file"
-           id="file-watermark"
-           accept="application/pdf"
-           hidden>
+    <input
+      type="file"
+      id="file-watermark"
+      accept="application/pdf"
+      hidden
+    >
 
     <div class="filelist" id="list-watermark"></div>
 
@@ -670,14 +756,23 @@ footer{
 
       <label>
         Text
-        <input type="text"
-               id="wm-text"
-               value="CONFIDENTIAL">
+
+        <input
+          type="text"
+          id="wm-text"
+          value="CONFIDENTIAL"
+        >
+
       </label>
 
     </div>
 
-    <button class="run-btn" id="run-watermark" disabled>
+    <button
+      type="button"
+      class="run-btn"
+      id="run-watermark"
+      disabled
+    >
       Stamp & download
     </button>
 
@@ -754,7 +849,9 @@ footer{
       user's device.
     </p>
 
-    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+    <button type="button" class="back-btn" onclick="showHome()">
+      ← Back to tools
+    </button>
 
   </div>
 
@@ -811,7 +908,9 @@ footer{
       services change.
     </p>
 
-    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+    <button type="button" class="back-btn" onclick="showHome()">
+      ← Back to tools
+    </button>
 
   </div>
 
@@ -860,7 +959,9 @@ footer{
       infrastructure.
     </p>
 
-    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+    <button type="button" class="back-btn" onclick="showHome()">
+      ← Back to tools
+    </button>
 
   </div>
 
@@ -892,7 +993,9 @@ footer{
       document utilities.
     </p>
 
-    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+    <button type="button" class="back-btn" onclick="showHome()">
+      ← Back to tools
+    </button>
 
   </div>
 
@@ -912,10 +1015,23 @@ footer{
   </div>
 
   <div class="footer-links">
-    <button onclick="showPage('about')">About</button>
-    <button onclick="showPage('privacy')">Privacy Policy</button>
-    <button onclick="showPage('terms')">Terms</button>
-    <button onclick="showPage('contact')">Contact</button>
+
+    <button type="button" onclick="showPage('about')">
+      About
+    </button>
+
+    <button type="button" onclick="showPage('privacy')">
+      Privacy Policy
+    </button>
+
+    <button type="button" onclick="showPage('terms')">
+      Terms
+    </button>
+
+    <button type="button" onclick="showPage('contact')">
+      Contact
+    </button>
+
   </div>
 
 </footer>
@@ -930,6 +1046,7 @@ const {
   degrees
 } = PDFLib;
 
+
 const state = {
   merge: [],
   split: null,
@@ -940,10 +1057,14 @@ const state = {
 
 function showHome(){
 
-  document.querySelectorAll('.site-page')
-    .forEach(page => page.classList.remove('active'));
+  document
+    .querySelectorAll('.site-page')
+    .forEach(page => {
+      page.classList.remove('active');
+    });
 
-  document.getElementById('home')
+  document
+    .getElementById('home')
     .classList.add('active');
 
   window.scrollTo({
@@ -956,8 +1077,11 @@ function showHome(){
 
 function showPage(name){
 
-  document.querySelectorAll('.site-page')
-    .forEach(page => page.classList.remove('active'));
+  document
+    .querySelectorAll('.site-page')
+    .forEach(page => {
+      page.classList.remove('active');
+    });
 
   const page =
     document.getElementById(name);
@@ -976,8 +1100,11 @@ function showPage(name){
 
 function openTool(tool){
 
-  document.querySelectorAll('.workspace')
-    .forEach(w => w.classList.remove('active'));
+  document
+    .querySelectorAll('.workspace')
+    .forEach(workspace => {
+      workspace.classList.remove('active');
+    });
 
   const workspace =
     document.getElementById('ws-' + tool);
@@ -986,45 +1113,1170 @@ function openTool(tool){
 
     workspace.classList.add('active');
 
-    workspace.scrollIntoView({
-      behavior:'smooth',
-      block:'start'
-    });
+    setTimeout(() => {
+
+      workspace.scrollIntoView({
+        behavior:'smooth',
+        block:'start'
+      });
+
+    }, 50);
 
   }
 
 }
 
 
-document.querySelectorAll('.drawer')
-.forEach(btn => {
+document
+  .querySelectorAll('.drawer')
+  .forEach(button => {
 
-  btn.addEventListener('click', () => {
+    button.addEventListener('click', () => {
 
-    openTool(btn.dataset.tool);
+      openTool(
+        button.dataset.tool
+      );
 
-  });
-
-});
-
-
-document.querySelectorAll('[data-close]')
-.forEach(btn => {
-
-  btn.addEventListener('click', () => {
-
-    btn.closest('.workspace')
-      .classList.remove('active');
+    });
 
   });
 
-});
+
+document
+  .querySelectorAll('[data-close]')
+  .forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      const workspace =
+        button.closest('.workspace');
+
+      if(workspace){
+        workspace.classList.remove('active');
+      }
+
+    });
+
+  });
 
 
 function fmtSize(bytes){
 
-  if(bytes < 1024)
+  if(bytes < 1024){
     return bytes + ' B';
+  }
 
-  if(bytes < 1024 * 1024)
-    return (bytes / 1024).toFixed(1) + ' KB
+  if(bytes < 1024 * 1024){
+    return (
+      bytes / 1024
+    ).toFixed(1) + ' KB';
+  }
+
+  return (
+    bytes / (1024 * 1024)
+  ).toFixed(1) + ' MB';
+
+}
+
+
+function getFilesForTool(tool){
+
+  if(tool === 'merge'){
+    return state.merge;
+  }
+
+  if(tool === 'img2pdf'){
+    return state.img2pdf;
+  }
+
+  if(tool === 'split'){
+    return state.split
+      ? [state.split]
+      : [];
+  }
+
+  if(tool === 'watermark'){
+    return state.watermark
+      ? [state.watermark]
+      : [];
+  }
+
+  return [];
+
+}
+
+
+function renderList(tool){
+
+  const list =
+    document.getElementById(
+      'list-' + tool
+    );
+
+  if(!list){
+    return;
+  }
+
+  list.innerHTML = '';
+
+  const files =
+    getFilesForTool(tool);
+
+  files.forEach((file, index) => {
+
+    const item =
+      document.createElement('div');
+
+    item.className = 'fileitem';
+
+
+    const name =
+      document.createElement('span');
+
+    name.className = 'name';
+
+    name.textContent =
+      file.name;
+
+
+    const meta =
+      document.createElement('span');
+
+    meta.className = 'meta';
+
+    meta.textContent =
+      fmtSize(file.size);
+
+
+    const remove =
+      document.createElement('button');
+
+    remove.type = 'button';
+
+    remove.textContent =
+      'Remove';
+
+
+    remove.addEventListener(
+      'click',
+      () => {
+
+        if(tool === 'merge'){
+          state.merge.splice(
+            index,
+            1
+          );
+        }
+
+        if(tool === 'img2pdf'){
+          state.img2pdf.splice(
+            index,
+            1
+          );
+        }
+
+        if(tool === 'split'){
+          state.split = null;
+        }
+
+        if(tool === 'watermark'){
+          state.watermark = null;
+        }
+
+        renderList(tool);
+
+        updateRunButtons();
+
+      }
+    );
+
+
+    item.appendChild(name);
+    item.appendChild(meta);
+    item.appendChild(remove);
+
+    list.appendChild(item);
+
+  });
+
+}
+
+
+function updateRunButtons(){
+
+  const merge =
+    document.getElementById(
+      'run-merge'
+    );
+
+  const split =
+    document.getElementById(
+      'run-split'
+    );
+
+  const img =
+    document.getElementById(
+      'run-img2pdf'
+    );
+
+  const watermark =
+    document.getElementById(
+      'run-watermark'
+    );
+
+
+  if(merge){
+    merge.disabled =
+      state.merge.length < 2;
+  }
+
+  if(split){
+    split.disabled =
+      !state.split;
+  }
+
+  if(img){
+    img.disabled =
+      state.img2pdf.length === 0;
+  }
+
+  if(watermark){
+    watermark.disabled =
+      !state.watermark;
+  }
+
+}
+
+
+function setStatus(
+  tool,
+  message,
+  type = ''
+){
+
+  const status =
+    document.getElementById(
+      'status-' + tool
+    );
+
+  if(!status){
+    return;
+  }
+
+  status.textContent =
+    message;
+
+  status.className =
+    'status ' + type;
+
+}
+
+
+function setupDropzone(tool){
+
+  const zone =
+    document.getElementById(
+      'dz-' + tool
+    );
+
+  const input =
+    document.getElementById(
+      'file-' + tool
+    );
+
+  if(!zone || !input){
+    return;
+  }
+
+
+  zone.addEventListener(
+    'click',
+    () => {
+
+      input.click();
+
+    }
+  );
+
+
+  zone.addEventListener(
+    'keydown',
+    event => {
+
+      if(
+        event.key === 'Enter' ||
+        event.key === ' '
+      ){
+
+        event.preventDefault();
+
+        input.click();
+
+      }
+
+    }
+  );
+
+
+  zone.addEventListener(
+    'dragover',
+    event => {
+
+      event.preventDefault();
+
+      zone.classList.add(
+        'drag'
+      );
+
+    }
+  );
+
+
+  zone.addEventListener(
+    'dragleave',
+    () => {
+
+      zone.classList.remove(
+        'drag'
+      );
+
+    }
+  );
+
+
+  zone.addEventListener(
+    'drop',
+    event => {
+
+      event.preventDefault();
+
+      zone.classList.remove(
+        'drag'
+      );
+
+      handleFiles(
+        tool,
+        event.dataTransfer.files
+      );
+
+    }
+  );
+
+
+  input.addEventListener(
+    'change',
+    () => {
+
+      handleFiles(
+        tool,
+        input.files
+      );
+
+      input.value = '';
+
+    }
+  );
+
+}
+
+
+function handleFiles(
+  tool,
+  fileList
+){
+
+  const files =
+    Array.from(
+      fileList || []
+    );
+
+
+  if(!files.length){
+    return;
+  }
+
+
+  if(tool === 'merge'){
+
+    const pdfs =
+      files.filter(
+        file =>
+          file.type === 'application/pdf' ||
+          file.name
+            .toLowerCase()
+            .endsWith('.pdf')
+      );
+
+    state.merge.push(
+      ...pdfs
+    );
+
+  }
+
+
+  if(tool === 'split'){
+
+    const file =
+      files.find(
+        file =>
+          file.type === 'application/pdf' ||
+          file.name
+            .toLowerCase()
+            .endsWith('.pdf')
+      );
+
+    if(file){
+      state.split = file;
+    }
+
+  }
+
+
+  if(tool === 'img2pdf'){
+
+    const images =
+      files.filter(
+        file =>
+          file.type === 'image/jpeg' ||
+          file.type === 'image/png' ||
+          file.name
+            .toLowerCase()
+            .endsWith('.jpg') ||
+          file.name
+            .toLowerCase()
+            .endsWith('.jpeg') ||
+          file.name
+            .toLowerCase()
+            .endsWith('.png')
+      );
+
+    state.img2pdf.push(
+      ...images
+    );
+
+  }
+
+
+  if(tool === 'watermark'){
+
+    const file =
+      files.find(
+        file =>
+          file.type === 'application/pdf' ||
+          file.name
+            .toLowerCase()
+            .endsWith('.pdf')
+      );
+
+    if(file){
+      state.watermark = file;
+    }
+
+  }
+
+
+  renderList(tool);
+
+  updateRunButtons();
+
+  if(tool === 'split' && state.split){
+
+    detectSplitPages();
+
+  }
+
+}
+
+
+async function detectSplitPages(){
+
+  if(!state.split){
+    return;
+  }
+
+  try{
+
+    const bytes =
+      await state.split.arrayBuffer();
+
+    const pdf =
+      await PDFDocument.load(
+        bytes
+      );
+
+    const total =
+      pdf.getPageCount();
+
+    const toInput =
+      document.getElementById(
+        'split-to'
+      );
+
+    if(toInput){
+
+      toInput.value =
+        total;
+
+      toInput.max =
+        total;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      'Page detection error:',
+      error
+    );
+
+  }
+
+}
+
+
+async function downloadBytes(
+  bytes,
+  filename
+){
+
+  const blob =
+    new Blob(
+      [bytes],
+      {
+        type:'application/pdf'
+      }
+    );
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+  const link =
+    document.createElement('a');
+
+  link.href =
+    url;
+
+  link.download =
+    filename;
+
+  link.style.display =
+    'none';
+
+  document.body.appendChild(
+    link
+  );
+
+  link.click();
+
+  link.remove();
+
+  setTimeout(
+    () => {
+      URL.revokeObjectURL(
+        url
+      );
+    },
+    1000
+  );
+
+}
+
+
+async function mergePDFs(){
+
+  if(state.merge.length < 2){
+    return;
+  }
+
+  setStatus(
+    'merge',
+    'Merging PDFs...'
+  );
+
+
+  try{
+
+    const output =
+      await PDFDocument.create();
+
+
+    for(
+      const file
+      of state.merge
+    ){
+
+      const bytes =
+        await file.arrayBuffer();
+
+      const source =
+        await PDFDocument.load(
+          bytes
+        );
+
+      const pages =
+        await output.copyPages(
+          source,
+          source.getPageIndices()
+        );
+
+      pages.forEach(
+        page => {
+          output.addPage(page);
+        }
+      );
+
+    }
+
+
+    const bytes =
+      await output.save();
+
+
+    await downloadBytes(
+      bytes,
+      'merged.pdf'
+    );
+
+
+    setStatus(
+      'merge',
+      'Done — your merged PDF was downloaded.',
+      'ok'
+    );
+
+  }catch(error){
+
+    console.error(
+      'Merge error:',
+      error
+    );
+
+    setStatus(
+      'merge',
+      'Could not merge the PDF files.',
+      'err'
+    );
+
+  }
+
+}
+
+
+async function splitPDF(){
+
+  if(!state.split){
+    return;
+  }
+
+  setStatus(
+    'split',
+    'Processing PDF...'
+  );
+
+
+  try{
+
+    const bytes =
+      await state.split.arrayBuffer();
+
+    const source =
+      await PDFDocument.load(
+        bytes
+      );
+
+    const total =
+      source.getPageCount();
+
+
+    let from =
+      parseInt(
+        document.getElementById(
+          'split-from'
+        ).value,
+        10
+      );
+
+
+    let to =
+      parseInt(
+        document.getElementById(
+          'split-to'
+        ).value,
+        10
+      );
+
+
+    if(!Number.isFinite(from)){
+      from = 1;
+    }
+
+    if(!Number.isFinite(to)){
+      to = total;
+    }
+
+
+    from =
+      Math.max(
+        1,
+        Math.min(
+          from,
+          total
+        )
+      );
+
+
+    to =
+      Math.max(
+        1,
+        Math.min(
+          to,
+          total
+        )
+      );
+
+
+    if(from > to){
+
+      setStatus(
+        'split',
+        'From page cannot be greater than To page.',
+        'err'
+      );
+
+      return;
+
+    }
+
+
+    const output =
+      await PDFDocument.create();
+
+
+    const pageIndices = [];
+
+    for(
+      let i = from - 1;
+      i < to;
+      i++
+    ){
+
+      pageIndices.push(i);
+
+    }
+
+
+    const pages =
+      await output.copyPages(
+        source,
+        pageIndices
+      );
+
+
+    pages.forEach(
+      page => {
+        output.addPage(page);
+      }
+    );
+
+
+    const outputBytes =
+      await output.save();
+
+
+    await downloadBytes(
+      outputBytes,
+      'split.pdf'
+    );
+
+
+    setStatus(
+      'split',
+      'Done — your PDF was downloaded.',
+      'ok'
+    );
+
+  }catch(error){
+
+    console.error(
+      'Split error:',
+      error
+    );
+
+    setStatus(
+      'split',
+      'Could not split the PDF.',
+      'err'
+    );
+
+  }
+
+}
+
+
+async function imagesToPDF(){
+
+  if(state.img2pdf.length === 0){
+    return;
+  }
+
+  setStatus(
+    'img2pdf',
+    'Creating PDF...'
+  );
+
+
+  try{
+
+    const output =
+      await PDFDocument.create();
+
+
+    for(
+      const file
+      of state.img2pdf
+    ){
+
+      const bytes =
+        await file.arrayBuffer();
+
+      let image;
+
+
+      if(
+        file.type === 'image/png' ||
+        file.name
+          .toLowerCase()
+          .endsWith('.png')
+      ){
+
+        image =
+          await output.embedPng(
+            bytes
+          );
+
+      }else{
+
+        image =
+          await output.embedJpg(
+            bytes
+          );
+
+      }
+
+
+      const width =
+        image.width;
+
+      const height =
+        image.height;
+
+
+      const page =
+        output.addPage(
+          [
+            width,
+            height
+          ]
+        );
+
+
+      page.drawImage(
+        image,
+        {
+          x:0,
+          y:0,
+          width,
+          height
+        }
+      );
+
+    }
+
+
+    const bytes =
+      await output.save();
+
+
+    await downloadBytes(
+      bytes,
+      'images.pdf'
+    );
+
+
+    setStatus(
+      'img2pdf',
+      'Done — your PDF was downloaded.',
+      'ok'
+    );
+
+  }catch(error){
+
+    console.error(
+      'Image PDF error:',
+      error
+    );
+
+    setStatus(
+      'img2pdf',
+      'Could not convert the images.',
+      'err'
+    );
+
+  }
+
+}
+
+
+async function addWatermark(){
+
+  if(!state.watermark){
+    return;
+  }
+
+  setStatus(
+    'watermark',
+    'Adding watermark...'
+  );
+
+
+  try{
+
+    const bytes =
+      await state.watermark.arrayBuffer();
+
+    const pdf =
+      await PDFDocument.load(
+        bytes
+      );
+
+
+    const font =
+      await pdf.embedFont(
+        StandardFonts.HelveticaBold
+      );
+
+
+    const textInput =
+      document.getElementById(
+        'wm-text'
+      );
+
+
+    const text =
+      textInput.value.trim() ||
+      'CONFIDENTIAL';
+
+
+    const pages =
+      pdf.getPages();
+
+
+    pages.forEach(
+      page => {
+
+        const {
+          width,
+          height
+        } = page.getSize();
+
+
+        const size =
+          Math.max(
+            18,
+            Math.min(
+              width,
+              height
+            ) / 9
+          );
+
+
+        const textWidth =
+          font.widthOfTextAtSize(
+            text,
+            size
+          );
+
+
+        page.drawText(
+          text,
+          {
+            x:
+              (width - textWidth) / 2,
+
+            y:
+              height / 2,
+
+            size,
+
+            font,
+
+            color:
+              rgb(
+                0.65,
+                0.65,
+                0.65
+              ),
+
+            rotate:
+              degrees(45),
+
+            opacity:0.28
+          }
+        );
+
+      }
+    );
+
+
+    const outputBytes =
+      await pdf.save();
+
+
+    await downloadBytes(
+      outputBytes,
+      'watermarked.pdf'
+    );
+
+
+    setStatus(
+      'watermark',
+      'Done — your watermarked PDF was downloaded.',
+      'ok'
+    );
+
+  }catch(error){
+
+    console.error(
+      'Watermark error:',
+      error
+    );
+
+    setStatus(
+      'watermark',
+      'Could not add the watermark.',
+      'err'
+    );
+
+  }
+
+}
+
+
+function init(){
+
+  if(
+    typeof PDFLib === 'undefined'
+  ){
+
+    alert(
+      'PDF library could not load. Please check your internet connection and reload the page.'
+    );
+
+    return;
+
+  }
+
+
+  setupDropzone(
+    'merge'
+  );
+
+  setupDropzone(
+    'split'
+  );
+
+  setupDropzone(
+    'img2pdf'
+  );
+
+  setupDropzone(
+    'watermark'
+  );
+
+
+  const mergeButton =
+    document.getElementById(
+      'run-merge'
+    );
+
+  if(mergeButton){
+
+    mergeButton.addEventListener(
+      'click',
+      mergePDFs
+    );
+
+  }
+
+
+  const splitButton =
+    document.getElementById(
+      'run-split'
+    );
+
+  if(splitButton){
+
+    splitButton.addEventListener(
+      'click',
+      splitPDF
+    );
+
+  }
+
+
+  const imageButton =
+    document.getElementById(
+      'run-img2pdf'
+    );
+
+  if(imageButton){
+
+    imageButton.addEventListener(
+      'click',
+      imagesToPDF
+    );
+
+  }
+
+
+  const watermarkButton =
+    document.getElementById(
+      'run-watermark'
+    );
+
+  if(watermarkButton){
+
+    watermarkButton.addEventListener(
+      'click',
+      addWatermark
+    );
+
+  }
+
+
+  updateRunButtons();
+
+}
+
+
+if(
+  document.readyState === 'loading'
+){
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    init
+  );
+
+}else{
+
+  init();
+
+}
+
+</script>
+
+</body>
+</html>
