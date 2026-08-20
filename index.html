@@ -3,623 +3,1846 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FileDrawer — Free PDF & Image Tools, No Signup</title>
-<meta name="description" content="Merge PDFs, split PDFs, convert images to PDF, and add watermarks — free, instant, no signup, works entirely in your browser.">
+
+<title>FileDrawer — Free PDF & Image Tools Online</title>
+
+<meta name="description" content="Free browser-based PDF and image tools. Merge PDFs, split PDFs, convert JPG and PNG images to PDF, and add PDF watermarks. No signup required.">
+<meta name="keywords" content="PDF tools, merge PDF, split PDF, JPG to PDF, PNG to PDF, PDF watermark, free PDF tools">
+<meta name="robots" content="index, follow">
+<meta name="author" content="FileDrawer">
+
+<meta property="og:title" content="FileDrawer — Free PDF & Image Tools">
+<meta property="og:description" content="Merge, split, convert and watermark PDFs directly in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hamail240506-star.github.io/filedrawer/">
+
+<link rel="canonical" href="https://hamail240506-star.github.io/filedrawer/">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
 <style>
-  :root{
-    --ink:#152524;
-    --ink-2:#1f3634;
-    --paper:#f4efe4;
-    --paper-dim:#e7e0cf;
-    --amber:#e0a545;
-    --amber-dim:#b9863a;
-    --line: rgba(244,239,228,0.14);
-    --ok:#7fb08a;
-    --err:#d4735a;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
-  }
+:root{
+  --ink:#152524;
+  --ink-2:#1f3634;
+  --paper:#f4efe4;
+  --paper-dim:#e7e0cf;
+  --amber:#e0a545;
+  --amber-dim:#b9863a;
+  --line:rgba(244,239,228,.14);
+  --ok:#4f7a5b;
+  --err:#b5533d;
+}
 
-  /* ---------- Header ---------- */
-  header{
-    padding:56px 24px 32px;
-    max-width:920px;
-    margin:0 auto;
-    text-align:left;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--amber);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:18px;
-  }
-  .eyebrow::before{
-    content:"";
-    width:18px;height:2px;
-    background:var(--amber);
-    display:inline-block;
-  }
-  h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:clamp(34px,6vw,58px);
-    line-height:1.02;
-    margin:0 0 18px;
-    letter-spacing:-0.01em;
-  }
-  h1 em{
-    font-style:normal;
-    color:var(--amber);
-  }
-  header p.sub{
-    font-size:16px;
-    line-height:1.55;
-    color:rgba(244,239,228,0.72);
-    max-width:520px;
-    margin:0;
-  }
+*{box-sizing:border-box}
 
-  /* ---------- Toolbox grid ---------- */
-  main{
-    max-width:920px;
-    margin:0 auto;
-    padding:8px 24px 80px;
-  }
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:Inter,sans-serif;
+  min-height:100vh;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+header{
+  padding:48px 20px 30px;
+  max-width:960px;
+  margin:auto;
+}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.eyebrow:before{
+  content:"";
+  width:18px;
+  height:2px;
+  background:var(--amber);
+}
+
+h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:clamp(36px,7vw,62px);
+  line-height:1.02;
+  margin:0 0 18px;
+}
+
+h1 em{
+  color:var(--amber);
+  font-style:normal;
+}
+
+.sub{
+  max-width:600px;
+  color:rgba(244,239,228,.72);
+  font-size:16px;
+  line-height:1.6;
+  margin:0;
+}
+
+nav{
+  max-width:960px;
+  margin:auto;
+  padding:0 20px 10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+nav button{
+  background:transparent;
+  border:1px solid rgba(244,239,228,.18);
+  color:var(--paper);
+  padding:8px 13px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+nav button:hover{
+  border-color:var(--amber);
+  color:var(--amber);
+}
+
+main{
+  max-width:960px;
+  margin:auto;
+  padding:8px 20px 70px;
+}
+
+.drawers{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-top:28px;
+}
+
+@media(max-width:640px){
   .drawers{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
-    margin-top:36px;
+    grid-template-columns:1fr;
   }
-  @media (max-width:640px){
-    .drawers{grid-template-columns:1fr;}
-  }
-  .drawer{
-    background:var(--ink-2);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:22px;
-    cursor:pointer;
-    position:relative;
-    transition:border-color 0.15s ease, transform 0.15s ease;
-    text-align:left;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  .drawer:hover, .drawer:focus-visible{
-    border-color:var(--amber-dim);
-    transform:translateY(-2px);
-  }
-  .drawer:focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
-  .drawer .tag{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    color:var(--amber);
-    letter-spacing:0.08em;
-  }
-  .drawer h3{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:19px;
-    margin:2px 0 0;
-    font-weight:600;
-  }
-  .drawer p{
-    font-size:13.5px;
-    color:rgba(244,239,228,0.6);
-    margin:2px 0 0;
-    line-height:1.4;
-  }
+}
 
-  /* ---------- Workspace (modal-ish panel) ---------- */
-  .workspace{
-    display:none;
-    margin-top:36px;
-    background:var(--paper);
-    color:var(--ink);
-    border-radius:12px;
-    padding:28px;
-    animation:slideIn 0.25s ease;
-  }
-  .workspace.active{display:block;}
-  @keyframes slideIn{
-    from{opacity:0; transform:translateY(8px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .ws-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    margin-bottom:20px;
-  }
-  .ws-head h2{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:24px;
-    margin:0 0 4px;
-  }
-  .ws-head p{
-    margin:0;
-    font-size:13.5px;
-    color:#5b5346;
-  }
-  .close-btn{
-    background:none;
-    border:1px solid #cfc6ae;
-    border-radius:7px;
-    width:34px;height:34px;
-    font-size:16px;
-    cursor:pointer;
-    color:var(--ink);
-    flex-shrink:0;
-  }
-  .close-btn:hover{background:#e7e0cf;}
+.drawer{
+  background:var(--ink-2);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:22px;
+  cursor:pointer;
+  position:relative;
+  transition:.15s ease;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  color:var(--paper);
+}
 
-  .dropzone{
-    border:2px dashed #b8ac8c;
-    border-radius:10px;
-    padding:34px 18px;
-    text-align:center;
-    cursor:pointer;
-    transition:border-color 0.15s ease, background 0.15s ease;
-  }
-  .dropzone.drag{
-    border-color:var(--amber-dim);
-    background:#eee6d2;
-  }
-  .dropzone .dz-icon{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    color:#8a7f66;
-    letter-spacing:0.06em;
-    margin-bottom:8px;
-  }
-  .dropzone strong{font-family:'Space Grotesk',sans-serif; font-size:15px;}
-  .dropzone span.hint{
-    display:block;
-    font-size:12.5px;
-    color:#8a7f66;
-    margin-top:6px;
-  }
+.drawer:hover,
+.drawer:focus-visible{
+  border-color:var(--amber-dim);
+  transform:translateY(-2px);
+}
 
-  .filelist{
-    margin-top:16px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  .fileitem{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:#fff;
-    border:1px solid #e2d9c2;
-    border-radius:7px;
-    padding:9px 12px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12.5px;
-  }
-  .fileitem .name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;}
-  .fileitem .meta{color:#8a7f66;}
-  .fileitem button{
-    background:none;border:none;color:#b5533d;cursor:pointer;font-size:13px;padding:0 4px;
-  }
+.drawer .tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--amber);
+  letter-spacing:.08em;
+}
 
-  .ws-options{
-    margin-top:18px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-    align-items:center;
-  }
-  .ws-options label{
-    font-size:13px;
-    font-family:'IBM Plex Mono',monospace;
-    display:flex;
-    align-items:center;
-    gap:7px;
-  }
-  .ws-options input[type=text],
-  .ws-options input[type=number]{
-    font-family:'IBM Plex Mono',monospace;
-    padding:7px 9px;
-    border:1px solid #cfc6ae;
-    border-radius:6px;
-    font-size:13px;
-    width:130px;
-    background:#fff;
-  }
+.drawer h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:19px;
+  margin:2px 0 0;
+}
 
-  .run-btn{
-    margin-top:22px;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    padding:13px 26px;
-    border-radius:8px;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:14.5px;
-    cursor:pointer;
-    transition:background 0.15s ease;
-  }
-  .run-btn:hover{background:var(--ink-2);}
-  .run-btn:disabled{opacity:0.4; cursor:not-allowed;}
+.drawer p{
+  font-size:13.5px;
+  color:rgba(244,239,228,.6);
+  margin:2px 0 0;
+  line-height:1.4;
+}
 
-  .status{
-    margin-top:14px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12.5px;
-  }
-  .status.ok{color:#4f7a5b;}
-  .status.err{color:var(--err);}
+.workspace{
+  display:none;
+  margin-top:30px;
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:12px;
+  padding:26px;
+}
 
-  .result-link{
-    display:inline-block;
-    margin-top:14px;
-    background:var(--amber);
-    color:var(--ink);
-    text-decoration:none;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:14px;
-    padding:11px 22px;
-    border-radius:8px;
-  }
+.workspace.active{
+  display:block;
+}
 
-  footer{
-    max-width:920px;
-    margin:0 auto;
-    padding:24px 24px 60px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    color:rgba(244,239,228,0.4);
-    border-top:1px solid var(--line);
-  }
-  .fine{margin-top:6px;}
+.ws-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:20px;
+}
+
+.ws-head h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:24px;
+  margin:0 0 4px;
+}
+
+.ws-head p{
+  margin:0;
+  font-size:13.5px;
+  color:#5b5346;
+}
+
+.close-btn{
+  background:none;
+  border:1px solid #cfc6ae;
+  border-radius:7px;
+  width:34px;
+  height:34px;
+  font-size:16px;
+  cursor:pointer;
+  color:var(--ink);
+}
+
+.dropzone{
+  border:2px dashed #b8ac8c;
+  border-radius:10px;
+  padding:34px 18px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.dropzone.drag{
+  border-color:var(--amber-dim);
+  background:#eee6d2;
+}
+
+.dz-icon{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:#8a7f66;
+  margin-bottom:8px;
+}
+
+.dropzone strong{
+  font-family:'Space Grotesk',sans-serif;
+}
+
+.hint{
+  display:block;
+  font-size:12.5px;
+  color:#8a7f66;
+  margin-top:6px;
+}
+
+.filelist{
+  margin-top:16px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.fileitem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#fff;
+  border:1px solid #e2d9c2;
+  border-radius:7px;
+  padding:9px 12px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+}
+
+.fileitem .name{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  flex:1;
+}
+
+.fileitem .meta{
+  color:#8a7f66;
+}
+
+.fileitem button{
+  background:none;
+  border:none;
+  color:#b5533d;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.ws-options{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
+.ws-options label{
+  font-size:13px;
+  font-family:'IBM Plex Mono',monospace;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.ws-options input{
+  font-family:'IBM Plex Mono',monospace;
+  padding:7px 9px;
+  border:1px solid #cfc6ae;
+  border-radius:6px;
+  font-size:13px;
+  width:140px;
+  background:#fff;
+}
+
+.run-btn{
+  margin-top:22px;
+  background:var(--ink);
+  color:var(--paper);
+  border:none;
+  padding:13px 26px;
+  border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  cursor:pointer;
+}
+
+.run-btn:hover{
+  background:var(--ink-2);
+}
+
+.run-btn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.status{
+  margin-top:14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+}
+
+.status.ok{
+  color:var(--ok);
+}
+
+.status.err{
+  color:var(--err);
+}
+
+.info-section{
+  margin-top:60px;
+  border-top:1px solid var(--line);
+  padding-top:35px;
+}
+
+.info-section h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:28px;
+  margin:0 0 12px;
+}
+
+.info-section h3{
+  font-family:'Space Grotesk',sans-serif;
+  margin-top:25px;
+}
+
+.info-section p,
+.info-section li{
+  color:rgba(244,239,228,.68);
+  line-height:1.7;
+  font-size:14px;
+}
+
+.info-section ul{
+  padding-left:20px;
+}
+
+.site-page{
+  display:none;
+}
+
+.site-page.active{
+  display:block;
+}
+
+.home-content{
+  display:block;
+}
+
+.page-card{
+  margin-top:35px;
+  background:var(--paper);
+  color:var(--ink);
+  border-radius:12px;
+  padding:30px;
+}
+
+.page-card h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:30px;
+  margin-top:0;
+}
+
+.page-card h3{
+  font-family:'Space Grotesk',sans-serif;
+  margin-top:26px;
+}
+
+.page-card p,
+.page-card li{
+  line-height:1.7;
+  font-size:14px;
+  color:#514b40;
+}
+
+.page-card a{
+  color:#7d5b20;
+}
+
+.back-btn{
+  background:var(--ink);
+  color:var(--paper);
+  border:0;
+  padding:11px 18px;
+  border-radius:7px;
+  cursor:pointer;
+}
+
+footer{
+  max-width:960px;
+  margin:auto;
+  padding:28px 20px 55px;
+  border-top:1px solid var(--line);
+  color:rgba(244,239,228,.42);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.footer-links{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.footer-links button{
+  background:none;
+  border:0;
+  padding:0;
+  color:var(--amber);
+  cursor:pointer;
+  font-family:inherit;
+  font-size:12px;
+}
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="eyebrow">Your files never leave this device</div>
-  <h1>Four tools.<br>Zero <em>uploads</em>.</h1>
-  <p class="sub">Merge, split, convert, and stamp your PDFs right here in the browser. No account, no server, no waiting room — pick a drawer below.</p>
+<header id="homeHeader">
+  <div class="eyebrow">Your files stay on your device</div>
+
+  <h1>Four tools.<br>Zero <em>uploads.</em></h1>
+
+  <p class="sub">
+    Free PDF and image tools that work directly in your browser.
+    Merge, split, convert and watermark your files without creating an account.
+  </p>
 </header>
 
+<nav>
+  <button onclick="showHome()">Home</button>
+  <button onclick="showPage('about')">About</button>
+  <button onclick="showPage('privacy')">Privacy</button>
+  <button onclick="showPage('terms')">Terms</button>
+  <button onclick="showPage('contact')">Contact</button>
+</nav>
+
 <main>
-  <div class="drawers" id="drawers">
+
+<div id="home" class="site-page active">
+
+  <div class="drawers">
+
     <button class="drawer" data-tool="merge">
       <span class="tag">01 · COMBINE</span>
       <h3>Merge PDFs</h3>
-      <p>Stack multiple PDFs into one, in the order you choose.</p>
+      <p>Combine multiple PDF files into one document.</p>
     </button>
+
     <button class="drawer" data-tool="split">
       <span class="tag">02 · SEPARATE</span>
       <h3>Split PDF</h3>
-      <p>Pull out a page range into its own file.</p>
+      <p>Extract a selected page range from a PDF.</p>
     </button>
+
     <button class="drawer" data-tool="img2pdf">
       <span class="tag">03 · CONVERT</span>
       <h3>Images → PDF</h3>
-      <p>Turn JPG or PNG photos into a single PDF document.</p>
+      <p>Convert JPG and PNG images into a PDF document.</p>
     </button>
+
     <button class="drawer" data-tool="watermark">
       <span class="tag">04 · STAMP</span>
       <h3>Add Watermark</h3>
-      <p>Overlay text across every page — drafts, copies, or your name.</p>
+      <p>Add text across every page of your PDF.</p>
     </button>
+
   </div>
 
-  <!-- MERGE WORKSPACE -->
+  <!-- MERGE -->
+
   <section class="workspace" id="ws-merge">
+
     <div class="ws-head">
       <div>
         <h2>Merge PDFs</h2>
-        <p>Drop two or more PDFs. They'll combine in the order listed below.</p>
+        <p>Drop two or more PDFs and combine them in the listed order.</p>
       </div>
+
       <button class="close-btn" data-close>&times;</button>
     </div>
+
     <div class="dropzone" id="dz-merge">
       <div class="dz-icon">DRAG · DROP · OR TAP</div>
       <strong>Add PDF files</strong>
-      <span class="hint">You can add more than one at a time</span>
+      <span class="hint">You can add multiple files</span>
     </div>
-    <input type="file" id="file-merge" accept="application/pdf" multiple hidden>
+
+    <input type="file"
+           id="file-merge"
+           accept="application/pdf"
+           multiple
+           hidden>
+
     <div class="filelist" id="list-merge"></div>
-    <button class="run-btn" id="run-merge" disabled>Merge & download</button>
+
+    <button class="run-btn" id="run-merge" disabled>
+      Merge & download
+    </button>
+
     <div class="status" id="status-merge"></div>
+
   </section>
 
-  <!-- SPLIT WORKSPACE -->
+  <!-- SPLIT -->
+
   <section class="workspace" id="ws-split">
+
     <div class="ws-head">
       <div>
         <h2>Split PDF</h2>
-        <p>Choose one PDF, then the page range you want extracted.</p>
+        <p>Choose a PDF and extract the page range you need.</p>
       </div>
+
       <button class="close-btn" data-close>&times;</button>
     </div>
+
     <div class="dropzone" id="dz-split">
       <div class="dz-icon">DRAG · DROP · OR TAP</div>
       <strong>Add one PDF file</strong>
-      <span class="hint">We'll tell you how many pages it has</span>
+      <span class="hint">We'll detect the number of pages</span>
     </div>
-    <input type="file" id="file-split" accept="application/pdf" hidden>
+
+    <input type="file"
+           id="file-split"
+           accept="application/pdf"
+           hidden>
+
     <div class="filelist" id="list-split"></div>
+
     <div class="ws-options">
-      <label>From page <input type="number" id="split-from" min="1" value="1"></label>
-      <label>To page <input type="number" id="split-to" min="1" value="1"></label>
+
+      <label>
+        From page
+        <input type="number"
+               id="split-from"
+               min="1"
+               value="1">
+      </label>
+
+      <label>
+        To page
+        <input type="number"
+               id="split-to"
+               min="1"
+               value="1">
+      </label>
+
     </div>
-    <button class="run-btn" id="run-split" disabled>Extract & download</button>
+
+    <button class="run-btn" id="run-split" disabled>
+      Extract & download
+    </button>
+
     <div class="status" id="status-split"></div>
+
   </section>
 
-  <!-- IMG2PDF WORKSPACE -->
+  <!-- IMAGE PDF -->
+
   <section class="workspace" id="ws-img2pdf">
+
     <div class="ws-head">
       <div>
         <h2>Images → PDF</h2>
-        <p>Drop JPG or PNG images. Each becomes one page, in order.</p>
+        <p>Convert JPG and PNG images into a single PDF.</p>
       </div>
+
       <button class="close-btn" data-close>&times;</button>
     </div>
+
     <div class="dropzone" id="dz-img2pdf">
       <div class="dz-icon">DRAG · DROP · OR TAP</div>
       <strong>Add image files</strong>
       <span class="hint">JPG and PNG supported</span>
     </div>
-    <input type="file" id="file-img2pdf" accept="image/jpeg,image/png" multiple hidden>
+
+    <input type="file"
+           id="file-img2pdf"
+           accept="image/jpeg,image/png"
+           multiple
+           hidden>
+
     <div class="filelist" id="list-img2pdf"></div>
-    <button class="run-btn" id="run-img2pdf" disabled>Convert & download</button>
+
+    <button class="run-btn" id="run-img2pdf" disabled>
+      Convert & download
+    </button>
+
     <div class="status" id="status-img2pdf"></div>
+
   </section>
 
-  <!-- WATERMARK WORKSPACE -->
+  <!-- WATERMARK -->
+
   <section class="workspace" id="ws-watermark">
+
     <div class="ws-head">
       <div>
         <h2>Add Watermark</h2>
-        <p>Choose a PDF and the text to stamp diagonally across every page.</p>
+        <p>Add text diagonally across every page of your PDF.</p>
       </div>
+
       <button class="close-btn" data-close>&times;</button>
     </div>
+
     <div class="dropzone" id="dz-watermark">
       <div class="dz-icon">DRAG · DROP · OR TAP</div>
       <strong>Add one PDF file</strong>
-      <span class="hint">Text is applied to all pages</span>
+      <span class="hint">Your text will be applied to every page</span>
     </div>
-    <input type="file" id="file-watermark" accept="application/pdf" hidden>
+
+    <input type="file"
+           id="file-watermark"
+           accept="application/pdf"
+           hidden>
+
     <div class="filelist" id="list-watermark"></div>
+
     <div class="ws-options">
-      <label>Text <input type="text" id="wm-text" value="CONFIDENTIAL"></label>
+
+      <label>
+        Text
+        <input type="text"
+               id="wm-text"
+               value="CONFIDENTIAL">
+      </label>
+
     </div>
-    <button class="run-btn" id="run-watermark" disabled>Stamp & download</button>
+
+    <button class="run-btn" id="run-watermark" disabled>
+      Stamp & download
+    </button>
+
     <div class="status" id="status-watermark"></div>
+
   </section>
+
+  <section class="info-section">
+
+    <h2>Free PDF Tools in Your Browser</h2>
+
+    <p>
+      FileDrawer provides simple PDF and image utilities for everyday tasks.
+      You can merge PDF documents, extract pages, convert images to PDF,
+      and add text watermarks.
+    </p>
+
+    <h3>How does FileDrawer work?</h3>
+
+    <p>
+      File processing is performed by JavaScript running in your browser.
+      Your selected files are processed locally instead of being uploaded
+      to a FileDrawer server.
+    </p>
+
+    <h3>Why use FileDrawer?</h3>
+
+    <ul>
+      <li>No account required for the tools.</li>
+      <li>Simple interface designed for phones and computers.</li>
+      <li>Useful PDF operations in one place.</li>
+      <li>Local browser processing for the supported tools.</li>
+    </ul>
+
+  </section>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<div id="about" class="site-page">
+
+  <div class="page-card">
+
+    <h2>About FileDrawer</h2>
+
+    <p>
+      FileDrawer is a simple collection of browser-based PDF and image
+      utilities designed to make common document tasks easier.
+    </p>
+
+    <h3>Our goal</h3>
+
+    <p>
+      The goal of FileDrawer is to provide useful document tools with a
+      straightforward interface and without requiring users to create an
+      account just to perform basic operations.
+    </p>
+
+    <h3>Available tools</h3>
+
+    <ul>
+      <li>Merge PDF documents</li>
+      <li>Split and extract PDF pages</li>
+      <li>Convert JPG and PNG images to PDF</li>
+      <li>Add text watermarks to PDF files</li>
+    </ul>
+
+    <h3>Local processing</h3>
+
+    <p>
+      The current tools use JavaScript and PDF libraries inside the browser.
+      This means supported file operations are performed locally on the
+      user's device.
+    </p>
+
+    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+
+  </div>
+
+</div>
+
+
+<!-- PRIVACY -->
+
+<div id="privacy" class="site-page">
+
+  <div class="page-card">
+
+    <h2>Privacy Policy</h2>
+
+    <p>
+      <strong>Last updated: August 20, 2026</strong>
+    </p>
+
+    <h3>Files</h3>
+
+    <p>
+      FileDrawer's current PDF and image tools are designed to process
+      selected files locally in the user's browser. FileDrawer does not
+      intentionally upload those files to a FileDrawer server for processing.
+    </p>
+
+    <h3>Personal information</h3>
+
+    <p>
+      The basic tools do not require an account or registration.
+      We do not ask users to provide personal information simply to use
+      the document tools.
+    </p>
+
+    <h3>Third-party services</h3>
+
+    <p>
+      The website may use third-party services such as content delivery
+      networks, fonts, analytics, advertising, or other services in the
+      future. Those services may have their own privacy policies and
+      data practices.
+    </p>
+
+    <h3>Cookies</h3>
+
+    <p>
+      FileDrawer itself does not need cookies for the basic PDF processing
+      functionality. If advertising or analytics services are added,
+      those services may use cookies or similar technologies.
+    </p>
+
+    <h3>Changes</h3>
+
+    <p>
+      This Privacy Policy may be updated when the website's features or
+      services change.
+    </p>
+
+    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+
+  </div>
+
+</div>
+
+
+<!-- TERMS -->
+
+<div id="terms" class="site-page">
+
+  <div class="page-card">
+
+    <h2>Terms of Service</h2>
+
+    <p>
+      <strong>Last updated: August 20, 2026</strong>
+    </p>
+
+    <h3>Use of the website</h3>
+
+    <p>
+      FileDrawer provides browser-based document utilities for general
+      personal and business use. You are responsible for the files you
+      choose to process and for ensuring that you have the necessary
+      rights to those files.
+    </p>
+
+    <h3>No guarantee</h3>
+
+    <p>
+      Although we aim to provide reliable tools, FileDrawer does not
+      guarantee that every file will be processed successfully or that
+      generated documents will be suitable for every purpose.
+    </p>
+
+    <h3>Important documents</h3>
+
+    <p>
+      Always keep an original copy of important documents. Users should
+      verify generated files before relying on them.
+    </p>
+
+    <h3>Acceptable use</h3>
+
+    <p>
+      You agree not to use the website for unlawful activities or in a way
+      that attempts to damage, disrupt, or abuse the website or its
+      infrastructure.
+    </p>
+
+    <h3>Changes</h3>
+
+    <p>
+      Features and these terms may change as FileDrawer develops.
+    </p>
+
+    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+
+  </div>
+
+</div>
+
+
+<!-- CONTACT -->
+
+<div id="contact" class="site-page">
+
+  <div class="page-card">
+
+    <h2>Contact FileDrawer</h2>
+
+    <p>
+      Have a question, found a problem, or want to suggest a new tool?
+    </p>
+
+    <h3>Email</h3>
+
+    <p>
+      For now, you can contact the FileDrawer owner through the GitHub
+      repository associated with this website.
+    </p>
+
+    <h3>Suggestions</h3>
+
+    <p>
+      Useful future tools may include PDF compression, PDF rotation,
+      PDF page deletion, PDF to image conversion, and additional
+      document utilities.
+    </p>
+
+    <button class="back-btn" onclick="showHome()">← Back to tools</button>
+
+  </div>
+
+</div>
+
 </main>
 
+
 <footer>
-  <div>FileDrawer — all processing happens locally in your browser via JavaScript.</div>
-  <div class="fine">No file is ever sent to a server. Close the tab and everything is gone.</div>
+
+  <div>
+    FileDrawer — Free browser-based PDF & image tools.
+  </div>
+
+  <div>
+    Supported document processing is performed locally in the browser.
+  </div>
+
+  <div class="footer-links">
+    <button onclick="showPage('about')">About</button>
+    <button onclick="showPage('privacy')">Privacy Policy</button>
+    <button onclick="showPage('terms')">Terms</button>
+    <button onclick="showPage('contact')">Contact</button>
+  </div>
+
 </footer>
 
+
 <script>
-const { PDFDocument, StandardFonts, rgb, degrees } = PDFLib;
-const state = { merge: [], split: null, img2pdf: [], watermark: null };
+
+const {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+  degrees
+} = PDFLib;
+
+const state = {
+  merge: [],
+  split: null,
+  img2pdf: [],
+  watermark: null
+};
+
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showHome(){
+
+  document.querySelectorAll('.site-page')
+    .forEach(page => page.classList.remove('active'));
+
+  document.getElementById('home').classList.add('active');
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+}
+
+
+function showPage(name){
+
+  document.querySelectorAll('.site-page')
+    .forEach(page => page.classList.remove('active'));
+
+  const page = document.getElementById(name);
+
+  if(page){
+    page.classList.add('active');
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+}
+
+
+/* =========================
+   TOOLS
+========================= */
 
 function openTool(tool){
-  document.querySelectorAll('.workspace').forEach(w => w.classList.remove('active'));
-  document.getElementById('ws-' + tool).classList.add('active');
-  document.getElementById('ws-' + tool).scrollIntoView({behavior:'smooth', block:'start'});
+
+  document.querySelectorAll('.workspace')
+    .forEach(w => w.classList.remove('active'));
+
+  const workspace =
+    document.getElementById('ws-' + tool);
+
+  if(workspace){
+
+    workspace.classList.add('active');
+
+    workspace.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+  }
 }
-document.querySelectorAll('.drawer').forEach(btn=>{
-  btn.addEventListener('click', ()=> openTool(btn.dataset.tool));
+
+
+document.querySelectorAll('.drawer')
+.forEach(btn => {
+
+  btn.addEventListener('click', () => {
+
+    openTool(btn.dataset.tool);
+
+  });
+
 });
-document.querySelectorAll('[data-close]').forEach(btn=>{
-  btn.addEventListener('click', ()=> btn.closest('.workspace').classList.remove('active'));
+
+
+document.querySelectorAll('[data-close]')
+.forEach(btn => {
+
+  btn.addEventListener('click', () => {
+
+    btn.closest('.workspace')
+      .classList.remove('active');
+
+  });
+
 });
+
+
+/* =========================
+   HELPERS
+========================= */
 
 function fmtSize(bytes){
-  if(bytes < 1024) return bytes + ' B';
-  if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1024/1024).toFixed(2) + ' MB';
+
+  if(bytes < 1024)
+    return bytes + ' B';
+
+  if(bytes < 1024 * 1024)
+    return (bytes / 1024).toFixed(1) + ' KB';
+
+  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
 }
+
 
 function setupDropzone(dzId, inputId, onFiles){
+
   const dz = document.getElementById(dzId);
   const input = document.getElementById(inputId);
-  dz.addEventListener('click', ()=> input.click());
-  input.addEventListener('change', e => onFiles(Array.from(e.target.files)));
-  ['dragover'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.add('drag'); }));
-  ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
-  dz.addEventListener('drop', e=>{
-    e.preventDefault();
-    onFiles(Array.from(e.dataTransfer.files));
+
+  dz.addEventListener('click', () => {
+    input.click();
   });
+
+
+  input.addEventListener('change', e => {
+
+    onFiles(Array.from(e.target.files));
+
+    input.value = '';
+
+  });
+
+
+  dz.addEventListener('dragover', e => {
+
+    e.preventDefault();
+
+    dz.classList.add('drag');
+
+  });
+
+
+  dz.addEventListener('dragleave', () => {
+
+    dz.classList.remove('drag');
+
+  });
+
+
+  dz.addEventListener('drop', e => {
+
+    e.preventDefault();
+
+    dz.classList.remove('drag');
+
+    onFiles(Array.from(e.dataTransfer.files));
+
+  });
+
 }
+
 
 function renderList(listId, files, onRemove){
+
   const el = document.getElementById(listId);
+
   el.innerHTML = '';
+
   files.forEach((f, i) => {
+
     const row = document.createElement('div');
+
     row.className = 'fileitem';
-    row.innerHTML = `<span class="name">${f.name}</span><span class="meta">${fmtSize(f.size)}</span>`;
+
+
+    const name = document.createElement('span');
+
+    name.className = 'name';
+
+    name.textContent = f.name;
+
+
+    const meta = document.createElement('span');
+
+    meta.className = 'meta';
+
+    meta.textContent = fmtSize(f.size);
+
+
     const rm = document.createElement('button');
+
     rm.textContent = 'remove';
-    rm.addEventListener('click', ()=> onRemove(i));
+
+    rm.addEventListener('click', () => onRemove(i));
+
+
+    row.appendChild(name);
+    row.appendChild(meta);
     row.appendChild(rm);
+
     el.appendChild(row);
+
   });
+
 }
+
 
 function download(bytes, filename){
-  const blob = new Blob([bytes], {type:'application/pdf'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+
+  const blob = new Blob(
+    [bytes],
+    {type:'application/pdf'}
+  );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement('a');
+
+  a.href = url;
+  a.download = filename;
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  setTimeout(() => {
+
+    URL.revokeObjectURL(url);
+
+  }, 4000);
+
 }
+
 
 function setStatus(id, msg, kind){
-  const el = document.getElementById(id);
+
+  const el =
+    document.getElementById(id);
+
   el.textContent = msg;
-  el.className = 'status' + (kind ? ' ' + kind : '');
+
+  el.className =
+    'status' + (kind ? ' ' + kind : '');
+
 }
 
-/* ---------------- MERGE ---------------- */
+
+/* =========================
+   MERGE PDF
+========================= */
+
 function refreshMerge(){
-  renderList('list-merge', state.merge, i=>{ state.merge.splice(i,1); refreshMerge(); });
-  document.getElementById('run-merge').disabled = state.merge.length < 2;
-}
-setupDropzone('dz-merge','file-merge', files=>{
-  state.merge = state.merge.concat(files);
-  refreshMerge();
-});
-document.getElementById('run-merge').addEventListener('click', async ()=>{
-  setStatus('status-merge','Merging…');
-  try{
-    const outDoc = await PDFDocument.create();
-    for(const f of state.merge){
-      const bytes = await f.arrayBuffer();
-      const src = await PDFDocument.load(bytes);
-      const pages = await outDoc.copyPages(src, src.getPageIndices());
-      pages.forEach(p => outDoc.addPage(p));
+
+  renderList(
+    'list-merge',
+    state.merge,
+    i => {
+
+      state.merge.splice(i,1);
+
+      refreshMerge();
+
     }
-    const out = await outDoc.save();
-    download(out, 'merged.pdf');
-    setStatus('status-merge','Done — download started.', 'ok');
-  }catch(err){
-    setStatus('status-merge','Something went wrong: ' + err.message, 'err');
+  );
+
+
+  document.getElementById('run-merge')
+    .disabled =
+    state.merge.length < 2;
+
+}
+
+
+setupDropzone(
+  'dz-merge',
+  'file-merge',
+  files => {
+
+    const pdfs =
+      files.filter(f =>
+        f.type === 'application/pdf'
+      );
+
+    state.merge =
+      state.merge.concat(pdfs);
+
+    refreshMerge();
+
   }
+);
+
+
+document.getElementById('run-merge')
+.addEventListener('click', async () => {
+
+  setStatus(
+    'status-merge',
+    'Merging...'
+  );
+
+  try{
+
+    const outDoc =
+      await PDFDocument.create();
+
+
+    for(const f of state.merge){
+
+      const bytes =
+        await f.arrayBuffer();
+
+      const src =
+        await PDFDocument.load(bytes);
+
+      const pages =
+        await outDoc.copyPages(
+          src,
+          src.getPageIndices()
+        );
+
+      pages.forEach(page => {
+
+        outDoc.addPage(page);
+
+      });
+
+    }
+
+
+    const out =
+      await outDoc.save();
+
+    download(
+      out,
+      'merged.pdf'
+    );
+
+
+    setStatus(
+      'status-merge',
+      'Done — download started.',
+      'ok'
+    );
+
+  }catch(err){
+
+    setStatus(
+      'status-merge',
+      'Something went wrong: ' +
+      err.message,
+      'err'
+    );
+
+  }
+
 });
 
-/* ---------------- SPLIT ---------------- */
-setupDropzone('dz-split','file-split', async files=>{
-  if(!files.length) return;
-  state.split = files[0];
-  renderList('list-split', [state.split], ()=>{ state.split=null; renderList('list-split',[]); document.getElementById('run-split').disabled = true; });
-  try{
-    const bytes = await state.split.arrayBuffer();
-    const src = await PDFDocument.load(bytes);
-    const total = src.getPageCount();
-    document.getElementById('split-from').max = total;
-    document.getElementById('split-to').max = total;
-    document.getElementById('split-to').value = total;
-    setStatus('status-split', total + ' page(s) detected.');
-    document.getElementById('run-split').disabled = false;
-  }catch(err){
-    setStatus('status-split','Could not read that PDF: ' + err.message, 'err');
+
+/* =========================
+   SPLIT PDF
+========================= */
+
+setupDropzone(
+  'dz-split',
+  'file-split',
+  async files => {
+
+    if(!files.length)
+      return;
+
+
+    state.split = files[0];
+
+
+    renderList(
+      'list-split',
+      [state.split],
+      () => {
+
+        state.split = null;
+
+        renderList(
+          'list-split',
+          []
+        );
+
+        document.getElementById(
+          'run-split'
+        ).disabled = true;
+
+      }
+    );
+
+
+    try{
+
+      const bytes =
+        await state.split.arrayBuffer();
+
+      const src =
+        await PDFDocument.load(bytes);
+
+      const total =
+        src.getPageCount();
+
+
+      document.getElementById(
+        'split-from'
+      ).max = total;
+
+
+      document.getElementById(
+        'split-to'
+      ).max = total;
+
+
+      document.getElementById(
+        'split-from'
+      ).value = 1;
+
+
+      document.getElementById(
+        'split-to'
+      ).value = total;
+
+
+      setStatus(
+        'status-split',
+        total + ' page(s) detected.'
+      );
+
+
+      document.getElementById(
+        'run-split'
+      ).disabled = false;
+
+
+    }catch(err){
+
+      setStatus(
+        'status-split',
+        'Could not read that PDF: ' +
+        err.message,
+        'err'
+      );
+
+    }
+
   }
-});
-document.getElementById('run-split').addEventListener('click', async ()=>{
-  if(!state.split) return;
-  const from = parseInt(document.getElementById('split-from').value,10);
-  const to = parseInt(document.getElementById('split-to').value,10);
-  setStatus('status-split','Extracting…');
+);
+
+
+document.getElementById('run-split')
+.addEventListener('click', async () => {
+
+  if(!state.split)
+    return;
+
+
+  const from =
+    parseInt(
+      document.getElementById(
+        'split-from'
+      ).value,
+      10
+    );
+
+
+  const to =
+    parseInt(
+      document.getElementById(
+        'split-to'
+      ).value,
+      10
+    );
+
+
+  setStatus(
+    'status-split',
+    'Extracting...'
+  );
+
+
   try{
-    const bytes = await state.split.arrayBuffer();
-    const src = await PDFDocument.load(bytes);
-    const total = src.getPageCount();
-    if(from < 1 || to > total || from > to){
-      setStatus('status-split','Check your page range — file has ' + total + ' page(s).', 'err');
+
+    const bytes =
+      await state.split.arrayBuffer();
+
+    const src =
+      await PDFDocument.load(bytes);
+
+    const total =
+      src.getPageCount();
+
+
+    if(
+      !Number.isInteger(from) ||
+      !Number.isInteger(to) ||
+      from < 1 ||
+      to > total ||
+      from > to
+    ){
+
+      setStatus(
+        'status-split',
+        'Check your page range — file has ' +
+        total +
+        ' page(s).',
+        'err'
+      );
+
       return;
     }
+
+
     const indices = [];
-    for(let i = from-1; i <= to-1; i++) indices.push(i);
-    const outDoc = await PDFDocument.create();
-    const pages = await outDoc.copyPages(src, indices);
-    pages.forEach(p => outDoc.addPage(p));
-    const out = await outDoc.save();
-    download(out, `pages-${from}-${to}.pdf`);
-    setStatus('status-split','Done — download started.', 'ok');
-  }catch(err){
-    setStatus('status-split','Something went wrong: ' + err.message, 'err');
-  }
-});
 
-/* ---------------- IMG2PDF ---------------- */
-function refreshImg2pdf(){
-  renderList('list-img2pdf', state.img2pdf, i=>{ state.img2pdf.splice(i,1); refreshImg2pdf(); });
-  document.getElementById('run-img2pdf').disabled = state.img2pdf.length < 1;
-}
-setupDropzone('dz-img2pdf','file-img2pdf', files=>{
-  state.img2pdf = state.img2pdf.concat(files);
-  refreshImg2pdf();
-});
-document.getElementById('run-img2pdf').addEventListener('click', async ()=>{
-  setStatus('status-img2pdf','Converting…');
-  try{
-    const outDoc = await PDFDocument.create();
-    for(const f of state.img2pdf){
-      const bytes = await f.arrayBuffer();
-      let img;
-      if(f.type === 'image/png') img = await outDoc.embedPng(bytes);
-      else img = await outDoc.embedJpg(bytes);
-      const page = outDoc.addPage([img.width, img.height]);
-      page.drawImage(img, {x:0, y:0, width: img.width, height: img.height});
+
+    for(
+      let i = from - 1;
+      i <= to - 1;
+      i++
+    ){
+
+      indices.push(i);
+
     }
-    const out = await outDoc.save();
-    download(out, 'images.pdf');
-    setStatus('status-img2pdf','Done — download started.', 'ok');
+
+
+    const outDoc =
+      await PDFDocument.create();
+
+
+    const pages =
+      await outDoc.copyPages(
+        src,
+        indices
+      );
+
+
+    pages.forEach(page => {
+
+      outDoc.addPage(page);
+
+    });
+
+
+    const out =
+      await outDoc.save();
+
+
+    download(
+      out,
+      `pages-${from}-${to}.pdf`
+    );
+
+
+    setStatus(
+      'status-split',
+      'Done — download started.',
+      'ok'
+    );
+
+
   }catch(err){
-    setStatus('status-img2pdf','Something went wrong: ' + err.message, 'err');
+
+    setStatus(
+      'status-split',
+      'Something went wrong: ' +
+      err.message,
+      'err'
+    );
+
   }
+
 });
 
-/* ---------------- WATERMARK ---------------- */
-setupDropzone('dz-watermark','file-watermark', files=>{
-  if(!files.length) return;
-  state.watermark = files[0];
-  renderList('list-watermark', [state.watermark], ()=>{ state.watermark=null; renderList('list-watermark',[]); document.getElementById('run-watermark').disabled = true; });
-  document.getElementById('run-watermark').disabled = false;
-});
-document.getElementById('run-watermark').addEventListener('click', async ()=>{
-  if(!state.watermark) return;
-  const text = document.getElementById('wm-text').value || 'CONFIDENTIAL';
-  setStatus('status-watermark','Stamping…');
-  try{
-    const bytes = await state.watermark.arrayBuffer();
-    const doc = await PDFDocument.load(bytes);
-    const font = await doc.embedFont(StandardFonts.HelveticaBold);
-    const pages = doc.getPages();
-    pages.forEach(page=>{
-      const { width, height } = page.getSize();
-      page.drawText(text, {
-        x: width/2 - (text.length*height*0.012),
-        y: height/2,
-        size: Math.max(24, height*0.08),
-        font,
-        color: rgb(0.7,0.7,0.7),
-        opacity: 0.35,
-        rotate: degrees(45),
-      });
-    });
-    const out = await doc.save();
-    download(out, 'watermarked.pdf');
-    setStatus('status-watermark','Done — download started.', 'ok');
-  }catch(err){
-    setStatus('status-watermark','Something went wrong: ' + err.message, 'err');
+
+/* =========================
+   IMAGE TO PDF
+========================= */
+
+function refreshImg2pdf(){
+
+  renderList(
+    'list-img2pdf',
+    state.img2pdf,
+    i => {
+
+      state.img2pdf.splice(i,1);
+
+      refreshImg2pdf();
+
+    }
+  );
+
+
+  document.getElementById(
+    'run-img2pdf'
+  ).disabled =
+    state.img2pdf.length < 1;
+
+}
+
+
+setupDropzone(
+  'dz-img2pdf',
+  'file-img2pdf',
+  files => {
+
+    const images =
+      files.filter(f =>
+        f.type === 'image/jpeg' ||
+        f.type === 'image/png'
+      );
+
+
+    state.img2pdf =
+      state.img2pdf.concat(images);
+
+
+    refreshImg2pdf();
+
   }
+);
+
+
+document.getElementById('run-img2pdf')
+.addEventListener('click', async () => {
+
+  setStatus(
+    'status-img2pdf',
+    'Converting...'
+  );
+
+
+  try{
+
+    const outDoc =
+      await PDFDocument.create();
+
+
+    for(const f of state.img2pdf){
+
+      const bytes =
+        await f.arrayBuffer();
+
+      let img;
+
+
+      if(f.type === 'image/png'){
+
+        img =
+          await outDoc.embedPng(bytes);
+
+      }else{
+
+        img =
+          await outDoc.embedJpg(bytes);
+
+      }
+
+
+      const page =
+        outDoc.addPage([
+          img.width,
+          img.height
+        ]);
+
+
+      page.drawImage(
+        img,
+        {
+          x:0,
+          y:0,
+          width:img.width,
+          height:img.height
+        }
+      );
+
+    }
+
+
+    const out =
+      await outDoc.save();
+
+
+    download(
+      out,
+      'images.pdf'
+    );
+
+
+    setStatus(
+      'status-img2pdf',
+      'Done — download started.',
+      'ok'
+    );
+
+
+  }catch(err){
+
+    setStatus(
+      'status-img2pdf',
+      'Something went wrong: ' +
+      err.message,
+      'err'
+    );
+
+  }
+
 });
+
+
+/* =========================
+   WATERMARK
+========================= */
+
+setupDropzone(
+  'dz-watermark',
+  'file-watermark',
+  files => {
+
+    if(!files.length)
+      return;
+
+
+    const pdf =
+      files.find(
+        f => f.type === 'application/pdf'
+      );
+
+
+    if(!pdf){
+
+      setStatus(
+        'status-watermark',
+        'Please select a PDF file.',
+        'err'
+      );
+
+      return;
+    }
+
+
+    state.watermark = pdf;
+
+
+    renderList(
+      'list-watermark',
+      [state.watermark],
+      () => {
+
+        state.watermark = null;
+
+        renderList(
+          'list-watermark',
+          []
+        );
+
+        document.getElementById(
+          'run-watermark'
+        ).disabled = true;
+
+      }
+    );
+
+
+    document.getElementById(
+      'run-watermark'
+    ).disabled = false;
+
+  }
+);
+
+
+document.getElementById('run-watermark')
+.addEventListener('click', async () => {
+
+  if(!state.watermark)
+    return;
+
+
+  const text =
+    document.getElementById(
+      'wm-text'
+    ).value.trim() ||
+    'CONFIDENTIAL';
+
+
+  setStatus(
+    'status-watermark',
+    'Stamping...'
+  );
+
+
+  try{
+
+    const bytes =
+      await state.watermark.arrayBuffer();
+
+
+    const doc =
+      await PDFDocument.load(bytes);
+
+
+    const font =
+      await doc.embedFont(
+        StandardFonts.HelveticaBold
+      );
+
+
+    const pages =
+      doc.getPages();
+
+
+    pages.forEach(page => {
+
+      const {
+        width,
+        height
+      } = page.getSize();
+
+
+      const size =
+        Math.max(
+          24,
+          Math.min(
+            60,
+            height * .08
+          )
+        );
+
+
+      const textWidth =
+        font.widthOfTextAtSize(
+          text,
+          size
+        );
+
+
+      page.drawText(
+        text,
+        {
+          x:
+            (width - textWidth) / 2,
+
+          y:
+            height / 2,
+
+          size:size,
+
+          font:font,
+
+          color:
+            rgb(.7,.7,.7),
+
+          opacity:.35,
+
+          rotate:
+            degrees(45)
+        }
+      );
+
+    });
+
+
+    const out =
+      await doc.save();
+
+
+    download(
+      out,
+      'watermarked.pdf'
+    );
+
+
+    setStatus(
+      'status-watermark',
+      'Done — download started.',
+      'ok'
+    );
+
+
+  }catch(err){
+
+    setStatus(
+      'status-watermark',
+      'Something went wrong: ' +
+      err.message,
+      'err'
+    );
+
+  }
+
+});
+
 </script>
 
 </body>
