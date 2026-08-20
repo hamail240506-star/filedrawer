@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileDrawer — Free PDF & Image Tools, No Signup</title>
+<meta name="description" content="Merge PDFs, split PDFs, convert images to PDF, and add watermarks — free, instant, no signup, works entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root{
+    --ink:#152524;
+    --ink-2:#1f3634;
+    --paper:#f4efe4;
+    --paper-dim:#e7e0cf;
+    --amber:#e0a545;
+    --amber-dim:#b9863a;
+    --line: rgba(244,239,228,0.14);
+    --ok:#7fb08a;
+    --err:#d4735a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    padding:56px 24px 32px;
+    max-width:920px;
+    margin:0 auto;
+    text-align:left;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--amber);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:2px;
+    background:var(--amber);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(34px,6vw,58px);
+    line-height:1.02;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--amber);
+  }
+  header p.sub{
+    font-size:16px;
+    line-height:1.55;
+    color:rgba(244,239,228,0.72);
+    max-width:520px;
+    margin:0;
+  }
+
+  /* ---------- Toolbox grid ---------- */
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:8px 24px 80px;
+  }
+  .drawers{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:36px;
+  }
+  @media (max-width:640px){
+    .drawers{grid-template-columns:1fr;}
+  }
+  .drawer{
+    background:var(--ink-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color 0.15s ease, transform 0.15s ease;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .drawer:hover, .drawer:focus-visible{
+    border-color:var(--amber-dim);
+    transform:translateY(-2px);
+  }
+  .drawer:focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
+  .drawer .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--amber);
+    letter-spacing:0.08em;
+  }
+  .drawer h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    margin:2px 0 0;
+    font-weight:600;
+  }
+  .drawer p{
+    font-size:13.5px;
+    color:rgba(244,239,228,0.6);
+    margin:2px 0 0;
+    line-height:1.4;
+  }
+
+  /* ---------- Workspace (modal-ish panel) ---------- */
+  .workspace{
+    display:none;
+    margin-top:36px;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:12px;
+    padding:28px;
+    animation:slideIn 0.25s ease;
+  }
+  .workspace.active{display:block;}
+  @keyframes slideIn{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .ws-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:20px;
+  }
+  .ws-head h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .ws-head p{
+    margin:0;
+    font-size:13.5px;
+    color:#5b5346;
+  }
+  .close-btn{
+    background:none;
+    border:1px solid #cfc6ae;
+    border-radius:7px;
+    width:34px;height:34px;
+    font-size:16px;
+    cursor:pointer;
+    color:var(--ink);
+    flex-shrink:0;
+  }
+  .close-btn:hover{background:#e7e0cf;}
+
+  .dropzone{
+    border:2px dashed #b8ac8c;
+    border-radius:10px;
+    padding:34px 18px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .dropzone.drag{
+    border-color:var(--amber-dim);
+    background:#eee6d2;
+  }
+  .dropzone .dz-icon{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:#8a7f66;
+    letter-spacing:0.06em;
+    margin-bottom:8px;
+  }
+  .dropzone strong{font-family:'Space Grotesk',sans-serif; font-size:15px;}
+  .dropzone span.hint{
+    display:block;
+    font-size:12.5px;
+    color:#8a7f66;
+    margin-top:6px;
+  }
+
+  .filelist{
+    margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .fileitem{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#fff;
+    border:1px solid #e2d9c2;
+    border-radius:7px;
+    padding:9px 12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+  }
+  .fileitem .name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;}
+  .fileitem .meta{color:#8a7f66;}
+  .fileitem button{
+    background:none;border:none;color:#b5533d;cursor:pointer;font-size:13px;padding:0 4px;
+  }
+
+  .ws-options{
+    margin-top:18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+  }
+  .ws-options label{
+    font-size:13px;
+    font-family:'IBM Plex Mono',monospace;
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .ws-options input[type=text],
+  .ws-options input[type=number]{
+    font-family:'IBM Plex Mono',monospace;
+    padding:7px 9px;
+    border:1px solid #cfc6ae;
+    border-radius:6px;
+    font-size:13px;
+    width:130px;
+    background:#fff;
+  }
+
+  .run-btn{
+    margin-top:22px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:13px 26px;
+    border-radius:8px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .run-btn:hover{background:var(--ink-2);}
+  .run-btn:disabled{opacity:0.4; cursor:not-allowed;}
+
+  .status{
+    margin-top:14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+  }
+  .status.ok{color:#4f7a5b;}
+  .status.err{color:var(--err);}
+
+  .result-link{
+    display:inline-block;
+    margin-top:14px;
+    background:var(--amber);
+    color:var(--ink);
+    text-decoration:none;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:11px 22px;
+    border-radius:8px;
+  }
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:24px 24px 60px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:rgba(244,239,228,0.4);
+    border-top:1px solid var(--line);
+  }
+  .fine{margin-top:6px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Your files never leave this device</div>
+  <h1>Four tools.<br>Zero <em>uploads</em>.</h1>
+  <p class="sub">Merge, split, convert, and stamp your PDFs right here in the browser. No account, no server, no waiting room — pick a drawer below.</p>
+</header>
+
+<main>
+  <div class="drawers" id="drawers">
+    <button class="drawer" data-tool="merge">
+      <span class="tag">01 · COMBINE</span>
+      <h3>Merge PDFs</h3>
+      <p>Stack multiple PDFs into one, in the order you choose.</p>
+    </button>
+    <button class="drawer" data-tool="split">
+      <span class="tag">02 · SEPARATE</span>
+      <h3>Split PDF</h3>
+      <p>Pull out a page range into its own file.</p>
+    </button>
+    <button class="drawer" data-tool="img2pdf">
+      <span class="tag">03 · CONVERT</span>
+      <h3>Images → PDF</h3>
+      <p>Turn JPG or PNG photos into a single PDF document.</p>
+    </button>
+    <button class="drawer" data-tool="watermark">
+      <span class="tag">04 · STAMP</span>
+      <h3>Add Watermark</h3>
+      <p>Overlay text across every page — drafts, copies, or your name.</p>
+    </button>
+  </div>
+
+  <!-- MERGE WORKSPACE -->
+  <section class="workspace" id="ws-merge">
+    <div class="ws-head">
+      <div>
+        <h2>Merge PDFs</h2>
+        <p>Drop two or more PDFs. They'll combine in the order listed below.</p>
+      </div>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <div class="dropzone" id="dz-merge">
+      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+      <strong>Add PDF files</strong>
+      <span class="hint">You can add more than one at a time</span>
+    </div>
+    <input type="file" id="file-merge" accept="application/pdf" multiple hidden>
+    <div class="filelist" id="list-merge"></div>
+    <button class="run-btn" id="run-merge" disabled>Merge & download</button>
+    <div class="status" id="status-merge"></div>
+  </section>
+
+  <!-- SPLIT WORKSPACE -->
+  <section class="workspace" id="ws-split">
+    <div class="ws-head">
+      <div>
+        <h2>Split PDF</h2>
+        <p>Choose one PDF, then the page range you want extracted.</p>
+      </div>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <div class="dropzone" id="dz-split">
+      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+      <strong>Add one PDF file</strong>
+      <span class="hint">We'll tell you how many pages it has</span>
+    </div>
+    <input type="file" id="file-split" accept="application/pdf" hidden>
+    <div class="filelist" id="list-split"></div>
+    <div class="ws-options">
+      <label>From page <input type="number" id="split-from" min="1" value="1"></label>
+      <label>To page <input type="number" id="split-to" min="1" value="1"></label>
+    </div>
+    <button class="run-btn" id="run-split" disabled>Extract & download</button>
+    <div class="status" id="status-split"></div>
+  </section>
+
+  <!-- IMG2PDF WORKSPACE -->
+  <section class="workspace" id="ws-img2pdf">
+    <div class="ws-head">
+      <div>
+        <h2>Images → PDF</h2>
+        <p>Drop JPG or PNG images. Each becomes one page, in order.</p>
+      </div>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <div class="dropzone" id="dz-img2pdf">
+      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+      <strong>Add image files</strong>
+      <span class="hint">JPG and PNG supported</span>
+    </div>
+    <input type="file" id="file-img2pdf" accept="image/jpeg,image/png" multiple hidden>
+    <div class="filelist" id="list-img2pdf"></div>
+    <button class="run-btn" id="run-img2pdf" disabled>Convert & download</button>
+    <div class="status" id="status-img2pdf"></div>
+  </section>
+
+  <!-- WATERMARK WORKSPACE -->
+  <section class="workspace" id="ws-watermark">
+    <div class="ws-head">
+      <div>
+        <h2>Add Watermark</h2>
+        <p>Choose a PDF and the text to stamp diagonally across every page.</p>
+      </div>
+      <button class="close-btn" data-close>&times;</button>
+    </div>
+    <div class="dropzone" id="dz-watermark">
+      <div class="dz-icon">DRAG · DROP · OR TAP</div>
+      <strong>Add one PDF file</strong>
+      <span class="hint">Text is applied to all pages</span>
+    </div>
+    <input type="file" id="file-watermark" accept="application/pdf" hidden>
+    <div class="filelist" id="list-watermark"></div>
+    <div class="ws-options">
+      <label>Text <input type="text" id="wm-text" value="CONFIDENTIAL"></label>
+    </div>
+    <button class="run-btn" id="run-watermark" disabled>Stamp & download</button>
+    <div class="status" id="status-watermark"></div>
+  </section>
+</main>
+
+<footer>
+  <div>FileDrawer — all processing happens locally in your browser via JavaScript.</div>
+  <div class="fine">No file is ever sent to a server. Close the tab and everything is gone.</div>
+</footer>
+
+<script>
+const { PDFDocument, StandardFonts, rgb, degrees } = PDFLib;
+const state = { merge: [], split: null, img2pdf: [], watermark: null };
+
+function openTool(tool){
+  document.querySelectorAll('.workspace').forEach(w => w.classList.remove('active'));
+  document.getElementById('ws-' + tool).classList.add('active');
+  document.getElementById('ws-' + tool).scrollIntoView({behavior:'smooth', block:'start'});
+}
+document.querySelectorAll('.drawer').forEach(btn=>{
+  btn.addEventListener('click', ()=> openTool(btn.dataset.tool));
+});
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.addEventListener('click', ()=> btn.closest('.workspace').classList.remove('active'));
+});
+
+function fmtSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1024/1024).toFixed(2) + ' MB';
+}
+
+function setupDropzone(dzId, inputId, onFiles){
+  const dz = document.getElementById(dzId);
+  const input = document.getElementById(inputId);
+  dz.addEventListener('click', ()=> input.click());
+  input.addEventListener('change', e => onFiles(Array.from(e.target.files)));
+  ['dragover'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', e=>{
+    e.preventDefault();
+    onFiles(Array.from(e.dataTransfer.files));
+  });
+}
+
+function renderList(listId, files, onRemove){
+  const el = document.getElementById(listId);
+  el.innerHTML = '';
+  files.forEach((f, i) => {
+    const row = document.createElement('div');
+    row.className = 'fileitem';
+    row.innerHTML = `<span class="name">${f.name}</span><span class="meta">${fmtSize(f.size)}</span>`;
+    const rm = document.createElement('button');
+    rm.textContent = 'remove';
+    rm.addEventListener('click', ()=> onRemove(i));
+    row.appendChild(rm);
+    el.appendChild(row);
+  });
+}
+
+function download(bytes, filename){
+  const blob = new Blob([bytes], {type:'application/pdf'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+}
+
+function setStatus(id, msg, kind){
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'status' + (kind ? ' ' + kind : '');
+}
+
+/* ---------------- MERGE ---------------- */
+function refreshMerge(){
+  renderList('list-merge', state.merge, i=>{ state.merge.splice(i,1); refreshMerge(); });
+  document.getElementById('run-merge').disabled = state.merge.length < 2;
+}
+setupDropzone('dz-merge','file-merge', files=>{
+  state.merge = state.merge.concat(files);
+  refreshMerge();
+});
+document.getElementById('run-merge').addEventListener('click', async ()=>{
+  setStatus('status-merge','Merging…');
+  try{
+    const outDoc = await PDFDocument.create();
+    for(const f of state.merge){
+      const bytes = await f.arrayBuffer();
+      const src = await PDFDocument.load(bytes);
+      const pages = await outDoc.copyPages(src, src.getPageIndices());
+      pages.forEach(p => outDoc.addPage(p));
+    }
+    const out = await outDoc.save();
+    download(out, 'merged.pdf');
+    setStatus('status-merge','Done — download started.', 'ok');
+  }catch(err){
+    setStatus('status-merge','Something went wrong: ' + err.message, 'err');
+  }
+});
+
+/* ---------------- SPLIT ---------------- */
+setupDropzone('dz-split','file-split', async files=>{
+  if(!files.length) return;
+  state.split = files[0];
+  renderList('list-split', [state.split], ()=>{ state.split=null; renderList('list-split',[]); document.getElementById('run-split').disabled = true; });
+  try{
+    const bytes = await state.split.arrayBuffer();
+    const src = await PDFDocument.load(bytes);
+    const total = src.getPageCount();
+    document.getElementById('split-from').max = total;
+    document.getElementById('split-to').max = total;
+    document.getElementById('split-to').value = total;
+    setStatus('status-split', total + ' page(s) detected.');
+    document.getElementById('run-split').disabled = false;
+  }catch(err){
+    setStatus('status-split','Could not read that PDF: ' + err.message, 'err');
+  }
+});
+document.getElementById('run-split').addEventListener('click', async ()=>{
+  if(!state.split) return;
+  const from = parseInt(document.getElementById('split-from').value,10);
+  const to = parseInt(document.getElementById('split-to').value,10);
+  setStatus('status-split','Extracting…');
+  try{
+    const bytes = await state.split.arrayBuffer();
+    const src = await PDFDocument.load(bytes);
+    const total = src.getPageCount();
+    if(from < 1 || to > total || from > to){
+      setStatus('status-split','Check your page range — file has ' + total + ' page(s).', 'err');
+      return;
+    }
+    const indices = [];
+    for(let i = from-1; i <= to-1; i++) indices.push(i);
+    const outDoc = await PDFDocument.create();
+    const pages = await outDoc.copyPages(src, indices);
+    pages.forEach(p => outDoc.addPage(p));
+    const out = await outDoc.save();
+    download(out, `pages-${from}-${to}.pdf`);
+    setStatus('status-split','Done — download started.', 'ok');
+  }catch(err){
+    setStatus('status-split','Something went wrong: ' + err.message, 'err');
+  }
+});
+
+/* ---------------- IMG2PDF ---------------- */
+function refreshImg2pdf(){
+  renderList('list-img2pdf', state.img2pdf, i=>{ state.img2pdf.splice(i,1); refreshImg2pdf(); });
+  document.getElementById('run-img2pdf').disabled = state.img2pdf.length < 1;
+}
+setupDropzone('dz-img2pdf','file-img2pdf', files=>{
+  state.img2pdf = state.img2pdf.concat(files);
+  refreshImg2pdf();
+});
+document.getElementById('run-img2pdf').addEventListener('click', async ()=>{
+  setStatus('status-img2pdf','Converting…');
+  try{
+    const outDoc = await PDFDocument.create();
+    for(const f of state.img2pdf){
+      const bytes = await f.arrayBuffer();
+      let img;
+      if(f.type === 'image/png') img = await outDoc.embedPng(bytes);
+      else img = await outDoc.embedJpg(bytes);
+      const page = outDoc.addPage([img.width, img.height]);
+      page.drawImage(img, {x:0, y:0, width: img.width, height: img.height});
+    }
+    const out = await outDoc.save();
+    download(out, 'images.pdf');
+    setStatus('status-img2pdf','Done — download started.', 'ok');
+  }catch(err){
+    setStatus('status-img2pdf','Something went wrong: ' + err.message, 'err');
+  }
+});
+
+/* ---------------- WATERMARK ---------------- */
+setupDropzone('dz-watermark','file-watermark', files=>{
+  if(!files.length) return;
+  state.watermark = files[0];
+  renderList('list-watermark', [state.watermark], ()=>{ state.watermark=null; renderList('list-watermark',[]); document.getElementById('run-watermark').disabled = true; });
+  document.getElementById('run-watermark').disabled = false;
+});
+document.getElementById('run-watermark').addEventListener('click', async ()=>{
+  if(!state.watermark) return;
+  const text = document.getElementById('wm-text').value || 'CONFIDENTIAL';
+  setStatus('status-watermark','Stamping…');
+  try{
+    const bytes = await state.watermark.arrayBuffer();
+    const doc = await PDFDocument.load(bytes);
+    const font = await doc.embedFont(StandardFonts.HelveticaBold);
+    const pages = doc.getPages();
+    pages.forEach(page=>{
+      const { width, height } = page.getSize();
+      page.drawText(text, {
+        x: width/2 - (text.length*height*0.012),
+        y: height/2,
+        size: Math.max(24, height*0.08),
+        font,
+        color: rgb(0.7,0.7,0.7),
+        opacity: 0.35,
+        rotate: degrees(45),
+      });
+    });
+    const out = await doc.save();
+    download(out, 'watermarked.pdf');
+    setStatus('status-watermark','Done — download started.', 'ok');
+  }catch(err){
+    setStatus('status-watermark','Something went wrong: ' + err.message, 'err');
+  }
+});
+</script>
+
+</body>
+</html>
