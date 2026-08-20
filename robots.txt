@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hamail240506-star.github.io/filedrawer/sitemap.xml
