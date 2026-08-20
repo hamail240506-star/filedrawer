@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<meta name="google-site-verification" content="wIoCeZuv8Eimh1UydE6gA4w41brwaEACFDGnwIUyQKw" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>FileDrawer — Free PDF & Image Tools Online</title>
 
 <meta name="description" content="Free browser-based PDF and image tools. Merge PDFs, split PDFs, convert JPG and PNG images to PDF, and add PDF watermarks. No signup required.">
+
 <meta name="keywords" content="PDF tools, merge PDF, split PDF, JPG to PDF, PNG to PDF, PDF watermark, free PDF tools">
+
 <meta name="robots" content="index, follow">
 <meta name="author" content="FileDrawer">
 
@@ -36,7 +41,9 @@
   --err:#b5533d;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 html{
   scroll-behavior:smooth;
@@ -394,10 +401,6 @@ main{
   display:block;
 }
 
-.home-content{
-  display:block;
-}
-
 .page-card{
   margin-top:35px;
   background:var(--paper);
@@ -422,10 +425,6 @@ main{
   line-height:1.7;
   font-size:14px;
   color:#514b40;
-}
-
-.page-card a{
-  color:#7d5b20;
 }
 
 .back-btn{
@@ -469,7 +468,7 @@ footer{
 
 <body>
 
-<header id="homeHeader">
+<header>
   <div class="eyebrow">Your files stay on your device</div>
 
   <h1>Four tools.<br>Zero <em>uploads.</em></h1>
@@ -520,7 +519,6 @@ footer{
 
   </div>
 
-  <!-- MERGE -->
 
   <section class="workspace" id="ws-merge">
 
@@ -555,7 +553,6 @@ footer{
 
   </section>
 
-  <!-- SPLIT -->
 
   <section class="workspace" id="ws-split">
 
@@ -609,7 +606,6 @@ footer{
 
   </section>
 
-  <!-- IMAGE PDF -->
 
   <section class="workspace" id="ws-img2pdf">
 
@@ -644,7 +640,6 @@ footer{
 
   </section>
 
-  <!-- WATERMARK -->
 
   <section class="workspace" id="ws-watermark">
 
@@ -689,6 +684,7 @@ footer{
 
   </section>
 
+
   <section class="info-section">
 
     <h2>Free PDF Tools in Your Browser</h2>
@@ -720,8 +716,6 @@ footer{
 
 </div>
 
-
-<!-- ABOUT -->
 
 <div id="about" class="site-page">
 
@@ -765,8 +759,6 @@ footer{
 
 </div>
 
-
-<!-- PRIVACY -->
 
 <div id="privacy" class="site-page">
 
@@ -825,8 +817,6 @@ footer{
 </div>
 
 
-<!-- TERMS -->
-
 <div id="terms" class="site-page">
 
   <div class="page-card">
@@ -869,20 +859,12 @@ footer{
       infrastructure.
     </p>
 
-    <h3>Changes</h3>
-
-    <p>
-      Features and these terms may change as FileDrawer develops.
-    </p>
-
     <button class="back-btn" onclick="showHome()">← Back to tools</button>
 
   </div>
 
 </div>
 
-
-<!-- CONTACT -->
 
 <div id="contact" class="site-page">
 
@@ -955,21 +937,19 @@ const state = {
 };
 
 
-/* =========================
-   PAGE NAVIGATION
-========================= */
-
 function showHome(){
 
   document.querySelectorAll('.site-page')
     .forEach(page => page.classList.remove('active'));
 
-  document.getElementById('home').classList.add('active');
+  document.getElementById('home')
+    .classList.add('active');
 
   window.scrollTo({
     top:0,
     behavior:'smooth'
   });
+
 }
 
 
@@ -978,7 +958,8 @@ function showPage(name){
   document.querySelectorAll('.site-page')
     .forEach(page => page.classList.remove('active'));
 
-  const page = document.getElementById(name);
+  const page =
+    document.getElementById(name);
 
   if(page){
     page.classList.add('active');
@@ -988,12 +969,9 @@ function showPage(name){
     top:0,
     behavior:'smooth'
   });
+
 }
 
-
-/* =========================
-   TOOLS
-========================= */
 
 function openTool(tool){
 
@@ -1011,7 +989,9 @@ function openTool(tool){
       behavior:'smooth',
       block:'start'
     });
+
   }
+
 }
 
 
@@ -1040,810 +1020,10 @@ document.querySelectorAll('[data-close]')
 });
 
 
-/* =========================
-   HELPERS
-========================= */
-
 function fmtSize(bytes){
 
   if(bytes < 1024)
     return bytes + ' B';
 
   if(bytes < 1024 * 1024)
-    return (bytes / 1024).toFixed(1) + ' KB';
-
-  return (bytes / 1024 / 1024).toFixed(2) + ' MB';
-}
-
-
-function setupDropzone(dzId, inputId, onFiles){
-
-  const dz = document.getElementById(dzId);
-  const input = document.getElementById(inputId);
-
-  dz.addEventListener('click', () => {
-    input.click();
-  });
-
-
-  input.addEventListener('change', e => {
-
-    onFiles(Array.from(e.target.files));
-
-    input.value = '';
-
-  });
-
-
-  dz.addEventListener('dragover', e => {
-
-    e.preventDefault();
-
-    dz.classList.add('drag');
-
-  });
-
-
-  dz.addEventListener('dragleave', () => {
-
-    dz.classList.remove('drag');
-
-  });
-
-
-  dz.addEventListener('drop', e => {
-
-    e.preventDefault();
-
-    dz.classList.remove('drag');
-
-    onFiles(Array.from(e.dataTransfer.files));
-
-  });
-
-}
-
-
-function renderList(listId, files, onRemove){
-
-  const el = document.getElementById(listId);
-
-  el.innerHTML = '';
-
-  files.forEach((f, i) => {
-
-    const row = document.createElement('div');
-
-    row.className = 'fileitem';
-
-
-    const name = document.createElement('span');
-
-    name.className = 'name';
-
-    name.textContent = f.name;
-
-
-    const meta = document.createElement('span');
-
-    meta.className = 'meta';
-
-    meta.textContent = fmtSize(f.size);
-
-
-    const rm = document.createElement('button');
-
-    rm.textContent = 'remove';
-
-    rm.addEventListener('click', () => onRemove(i));
-
-
-    row.appendChild(name);
-    row.appendChild(meta);
-    row.appendChild(rm);
-
-    el.appendChild(row);
-
-  });
-
-}
-
-
-function download(bytes, filename){
-
-  const blob = new Blob(
-    [bytes],
-    {type:'application/pdf'}
-  );
-
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement('a');
-
-  a.href = url;
-  a.download = filename;
-
-  document.body.appendChild(a);
-
-  a.click();
-
-  a.remove();
-
-  setTimeout(() => {
-
-    URL.revokeObjectURL(url);
-
-  }, 4000);
-
-}
-
-
-function setStatus(id, msg, kind){
-
-  const el =
-    document.getElementById(id);
-
-  el.textContent = msg;
-
-  el.className =
-    'status' + (kind ? ' ' + kind : '');
-
-}
-
-
-/* =========================
-   MERGE PDF
-========================= */
-
-function refreshMerge(){
-
-  renderList(
-    'list-merge',
-    state.merge,
-    i => {
-
-      state.merge.splice(i,1);
-
-      refreshMerge();
-
-    }
-  );
-
-
-  document.getElementById('run-merge')
-    .disabled =
-    state.merge.length < 2;
-
-}
-
-
-setupDropzone(
-  'dz-merge',
-  'file-merge',
-  files => {
-
-    const pdfs =
-      files.filter(f =>
-        f.type === 'application/pdf'
-      );
-
-    state.merge =
-      state.merge.concat(pdfs);
-
-    refreshMerge();
-
-  }
-);
-
-
-document.getElementById('run-merge')
-.addEventListener('click', async () => {
-
-  setStatus(
-    'status-merge',
-    'Merging...'
-  );
-
-  try{
-
-    const outDoc =
-      await PDFDocument.create();
-
-
-    for(const f of state.merge){
-
-      const bytes =
-        await f.arrayBuffer();
-
-      const src =
-        await PDFDocument.load(bytes);
-
-      const pages =
-        await outDoc.copyPages(
-          src,
-          src.getPageIndices()
-        );
-
-      pages.forEach(page => {
-
-        outDoc.addPage(page);
-
-      });
-
-    }
-
-
-    const out =
-      await outDoc.save();
-
-    download(
-      out,
-      'merged.pdf'
-    );
-
-
-    setStatus(
-      'status-merge',
-      'Done — download started.',
-      'ok'
-    );
-
-  }catch(err){
-
-    setStatus(
-      'status-merge',
-      'Something went wrong: ' +
-      err.message,
-      'err'
-    );
-
-  }
-
-});
-
-
-/* =========================
-   SPLIT PDF
-========================= */
-
-setupDropzone(
-  'dz-split',
-  'file-split',
-  async files => {
-
-    if(!files.length)
-      return;
-
-
-    state.split = files[0];
-
-
-    renderList(
-      'list-split',
-      [state.split],
-      () => {
-
-        state.split = null;
-
-        renderList(
-          'list-split',
-          []
-        );
-
-        document.getElementById(
-          'run-split'
-        ).disabled = true;
-
-      }
-    );
-
-
-    try{
-
-      const bytes =
-        await state.split.arrayBuffer();
-
-      const src =
-        await PDFDocument.load(bytes);
-
-      const total =
-        src.getPageCount();
-
-
-      document.getElementById(
-        'split-from'
-      ).max = total;
-
-
-      document.getElementById(
-        'split-to'
-      ).max = total;
-
-
-      document.getElementById(
-        'split-from'
-      ).value = 1;
-
-
-      document.getElementById(
-        'split-to'
-      ).value = total;
-
-
-      setStatus(
-        'status-split',
-        total + ' page(s) detected.'
-      );
-
-
-      document.getElementById(
-        'run-split'
-      ).disabled = false;
-
-
-    }catch(err){
-
-      setStatus(
-        'status-split',
-        'Could not read that PDF: ' +
-        err.message,
-        'err'
-      );
-
-    }
-
-  }
-);
-
-
-document.getElementById('run-split')
-.addEventListener('click', async () => {
-
-  if(!state.split)
-    return;
-
-
-  const from =
-    parseInt(
-      document.getElementById(
-        'split-from'
-      ).value,
-      10
-    );
-
-
-  const to =
-    parseInt(
-      document.getElementById(
-        'split-to'
-      ).value,
-      10
-    );
-
-
-  setStatus(
-    'status-split',
-    'Extracting...'
-  );
-
-
-  try{
-
-    const bytes =
-      await state.split.arrayBuffer();
-
-    const src =
-      await PDFDocument.load(bytes);
-
-    const total =
-      src.getPageCount();
-
-
-    if(
-      !Number.isInteger(from) ||
-      !Number.isInteger(to) ||
-      from < 1 ||
-      to > total ||
-      from > to
-    ){
-
-      setStatus(
-        'status-split',
-        'Check your page range — file has ' +
-        total +
-        ' page(s).',
-        'err'
-      );
-
-      return;
-    }
-
-
-    const indices = [];
-
-
-    for(
-      let i = from - 1;
-      i <= to - 1;
-      i++
-    ){
-
-      indices.push(i);
-
-    }
-
-
-    const outDoc =
-      await PDFDocument.create();
-
-
-    const pages =
-      await outDoc.copyPages(
-        src,
-        indices
-      );
-
-
-    pages.forEach(page => {
-
-      outDoc.addPage(page);
-
-    });
-
-
-    const out =
-      await outDoc.save();
-
-
-    download(
-      out,
-      `pages-${from}-${to}.pdf`
-    );
-
-
-    setStatus(
-      'status-split',
-      'Done — download started.',
-      'ok'
-    );
-
-
-  }catch(err){
-
-    setStatus(
-      'status-split',
-      'Something went wrong: ' +
-      err.message,
-      'err'
-    );
-
-  }
-
-});
-
-
-/* =========================
-   IMAGE TO PDF
-========================= */
-
-function refreshImg2pdf(){
-
-  renderList(
-    'list-img2pdf',
-    state.img2pdf,
-    i => {
-
-      state.img2pdf.splice(i,1);
-
-      refreshImg2pdf();
-
-    }
-  );
-
-
-  document.getElementById(
-    'run-img2pdf'
-  ).disabled =
-    state.img2pdf.length < 1;
-
-}
-
-
-setupDropzone(
-  'dz-img2pdf',
-  'file-img2pdf',
-  files => {
-
-    const images =
-      files.filter(f =>
-        f.type === 'image/jpeg' ||
-        f.type === 'image/png'
-      );
-
-
-    state.img2pdf =
-      state.img2pdf.concat(images);
-
-
-    refreshImg2pdf();
-
-  }
-);
-
-
-document.getElementById('run-img2pdf')
-.addEventListener('click', async () => {
-
-  setStatus(
-    'status-img2pdf',
-    'Converting...'
-  );
-
-
-  try{
-
-    const outDoc =
-      await PDFDocument.create();
-
-
-    for(const f of state.img2pdf){
-
-      const bytes =
-        await f.arrayBuffer();
-
-      let img;
-
-
-      if(f.type === 'image/png'){
-
-        img =
-          await outDoc.embedPng(bytes);
-
-      }else{
-
-        img =
-          await outDoc.embedJpg(bytes);
-
-      }
-
-
-      const page =
-        outDoc.addPage([
-          img.width,
-          img.height
-        ]);
-
-
-      page.drawImage(
-        img,
-        {
-          x:0,
-          y:0,
-          width:img.width,
-          height:img.height
-        }
-      );
-
-    }
-
-
-    const out =
-      await outDoc.save();
-
-
-    download(
-      out,
-      'images.pdf'
-    );
-
-
-    setStatus(
-      'status-img2pdf',
-      'Done — download started.',
-      'ok'
-    );
-
-
-  }catch(err){
-
-    setStatus(
-      'status-img2pdf',
-      'Something went wrong: ' +
-      err.message,
-      'err'
-    );
-
-  }
-
-});
-
-
-/* =========================
-   WATERMARK
-========================= */
-
-setupDropzone(
-  'dz-watermark',
-  'file-watermark',
-  files => {
-
-    if(!files.length)
-      return;
-
-
-    const pdf =
-      files.find(
-        f => f.type === 'application/pdf'
-      );
-
-
-    if(!pdf){
-
-      setStatus(
-        'status-watermark',
-        'Please select a PDF file.',
-        'err'
-      );
-
-      return;
-    }
-
-
-    state.watermark = pdf;
-
-
-    renderList(
-      'list-watermark',
-      [state.watermark],
-      () => {
-
-        state.watermark = null;
-
-        renderList(
-          'list-watermark',
-          []
-        );
-
-        document.getElementById(
-          'run-watermark'
-        ).disabled = true;
-
-      }
-    );
-
-
-    document.getElementById(
-      'run-watermark'
-    ).disabled = false;
-
-  }
-);
-
-
-document.getElementById('run-watermark')
-.addEventListener('click', async () => {
-
-  if(!state.watermark)
-    return;
-
-
-  const text =
-    document.getElementById(
-      'wm-text'
-    ).value.trim() ||
-    'CONFIDENTIAL';
-
-
-  setStatus(
-    'status-watermark',
-    'Stamping...'
-  );
-
-
-  try{
-
-    const bytes =
-      await state.watermark.arrayBuffer();
-
-
-    const doc =
-      await PDFDocument.load(bytes);
-
-
-    const font =
-      await doc.embedFont(
-        StandardFonts.HelveticaBold
-      );
-
-
-    const pages =
-      doc.getPages();
-
-
-    pages.forEach(page => {
-
-      const {
-        width,
-        height
-      } = page.getSize();
-
-
-      const size =
-        Math.max(
-          24,
-          Math.min(
-            60,
-            height * .08
-          )
-        );
-
-
-      const textWidth =
-        font.widthOfTextAtSize(
-          text,
-          size
-        );
-
-
-      page.drawText(
-        text,
-        {
-          x:
-            (width - textWidth) / 2,
-
-          y:
-            height / 2,
-
-          size:size,
-
-          font:font,
-
-          color:
-            rgb(.7,.7,.7),
-
-          opacity:.35,
-
-          rotate:
-            degrees(45)
-        }
-      );
-
-    });
-
-
-    const out =
-      await doc.save();
-
-
-    download(
-      out,
-      'watermarked.pdf'
-    );
-
-
-    setStatus(
-      'status-watermark',
-      'Done — download started.',
-      'ok'
-    );
-
-
-  }catch(err){
-
-    setStatus(
-      'status-watermark',
-      'Something went wrong: ' +
-      err.message,
-      'err'
-    );
-
-  }
-
-});
-
-</script>
-
-</body>
-</html>
+    return (bytes / 1024).toFixed(1) + ' KB
